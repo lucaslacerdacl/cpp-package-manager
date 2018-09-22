@@ -1,0 +1,40 @@
+{
+  "name": "cpp-package-manager",
+  "version": "1.0.0",
+  "description": "Package manager for Cpp.",
+  "scripts": {
+    "serve": "tsc && node bin/index.js init",
+    "build": "tsc --outDir bin",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasLacerdaCL/cpp-package-manager.git"
+  },
+  "author": "Lucas Leandro Costa Lacerda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LucasLacerdaCL/cpp-package-manager/issues"
+  },
+  "homepage": "https://github.com/LucasLacerdaCL/cpp-package-manager#readme",
+  "dependencies": {
+    "@octokit/rest": "^15.12.0",
+    "chalk": "^2.4.1",
+    "clear": "^0.1.0",
+    "clui": "^0.3.6",
+    "configstore": "^4.0.0",
+    "figlet": "^1.2.0",
+    "inquirer": "^6.2.0",
+    "lodash": "^4.17.11",
+    "minimist": "^1.2.0",
+    "simple-git": "^1.100.0",
+    "touch": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "0.0.43",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^10.10.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
+  }
+}
