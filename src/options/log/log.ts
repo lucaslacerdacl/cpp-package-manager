@@ -4,6 +4,15 @@ import * as _ from 'lodash';
 import LogModel from './log.model';
 
 export default class Log {
+  constructor(error: any) {
+    const formatedError = new LogModel(error);
+    if (!this.isLogFileAvaliable()) {
+      this.createLogFile(formatedError);
+    } else {
+      this.writeLogFile(formatedError);
+    }
+    console.log('Ocorreu um erro! Verifique o arquivo de log.');
+  }
 
   private isLogFileAvaliable(): boolean {
     return _.includes(fs.readdirSync('.'), 'cpp.packages.log.json');
@@ -12,11 +21,11 @@ export default class Log {
   private createLogFile(error: LogModel) {
     touch('cpp.packages.log.json')
       .then(() => {
-        fs.appendFileSync('cpp.packages.log.json', JSON.stringify([error], null, 2));
+        fs.writeFileSync('cpp.packages.log.json', JSON.stringify([error], null, 2));
       });
   }
 
-  private appendLogFile(error: LogModel) {
+  private writeLogFile(error: LogModel) {
     const file = fs.readFileSync('cpp.packages.log.json').toString();
     let formatedFile = [];
     if (file.length) {
@@ -24,15 +33,5 @@ export default class Log {
     }
     formatedFile.push(error);
     fs.writeFileSync('cpp.packages.log.json', JSON.stringify(formatedFile, null, 2));
-  }
-
-  constructor(error: any) {
-    const formatedError = new LogModel(error);
-    if (!this.isLogFileAvaliable()) {
-      this.createLogFile(formatedError);
-    } else {
-      this.appendLogFile(formatedError);
-      
-    }
   }
 }

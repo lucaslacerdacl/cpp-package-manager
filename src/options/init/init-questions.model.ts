@@ -21,6 +21,6 @@ export default class InitModel {
       message: this._message,
       default: this._defaultName,
       validateInput: this._validate
-    }
+    };
   }
 }

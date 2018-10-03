@@ -1,6 +1,6 @@
 export default class LogModel {
   error: any;
-  private date: Date;
+  readonly date: Date;
 
   constructor(error: any) {
     this.error = error;
