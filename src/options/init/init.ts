@@ -11,7 +11,7 @@ export default class Init {
 
   constructor() {
     if (this.isConfigFileAvaliable()) {
-      console.log('Já existe um arquivo de configuração.');
+      console.error('Já existe um arquivo de configuração.');
     } else {
       this.getConfigFileResponse();
     }
