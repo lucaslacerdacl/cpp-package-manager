@@ -29,7 +29,7 @@ export default class Init {
   }
 
   private createConfigFileQuestions(): Array<{}> {
-    const name = new InitModel('name', 'input', 'Enter a name for the project', path.basename(process.cwd()), this.checkIfInputIsValid());
+    const name = new InitModel('name', 'input', 'Enter a name for the project', path.basename(process.cwd()));
     const description = new InitModel('description', 'input', 'Enter a description for the project', '');
     const version = new InitModel('version', 'input', 'Enter a version for the project', '1.0.0');
 

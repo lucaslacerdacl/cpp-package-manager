@@ -4,14 +4,12 @@ export default class InitModel {
   private _type: string;
   private _message: string;
   private _defaultName: string;
-  private _validate: any;
 
-  constructor(name: string, type: string, message: string, defaultName: string, validate?: Function) {
+  constructor(name: string, type: string, message: string, defaultName: string) {
     this._name = name;
     this._type = type;
     this._message = message;
     this._defaultName = defaultName;
-    this._validate = validate;
   }
 
   toObject(): Object {
@@ -19,8 +17,7 @@ export default class InitModel {
       name: this._name,
       type: this._type,
       message: this._message,
-      default: this._defaultName,
-      validateInput: this._validate
+      default: this._defaultName
     };
   }
 }
