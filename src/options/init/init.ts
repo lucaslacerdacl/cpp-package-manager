@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import Log from '../log/log';
 import ConfigFileModel from '../config-file.model';
 import * as inquirer from 'inquirer';
 import * as path from 'path';
@@ -8,7 +7,7 @@ import InitModel from './init-questions.model';
 
 export default class Init {
 
-  constructor(private log: Log) {
+  constructor() {
     if (this.isConfigFileAvaliable()) {
       console.error('Já existe um arquivo de configuração.');
     } else {
@@ -20,11 +19,10 @@ export default class Init {
     return _.includes(fs.readdirSync('.'), 'cpp.packages.json');
   }
 
-  private async getConfigFileResponse() {
+  private getConfigFileResponse() {
     const questions = this.createConfigFileQuestions();
-    await inquirer.prompt(questions)
-    .then(this.createConfigFile)
-    .catch(this.createLogFile);
+    inquirer.prompt(questions)
+    .then(this.createConfigFile);
   }
 
   private createConfigFileQuestions(): Array<{}> {
@@ -36,12 +34,8 @@ export default class Init {
   }
 
   private createConfigFile(initResult: any) {
-    fs.openSync('cpp.packages.json', 'w');
     const configFile = new ConfigFileModel(initResult);
     fs.writeFileSync('cpp.packages.json', JSON.stringify(configFile, null, 2));
   }
 
-  private createLogFile(error: any) {
-    this.log.createLog(error);
-  }
 }

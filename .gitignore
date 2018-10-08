@@ -63,5 +63,8 @@ typings/
 # Builds
 /bin
 
-#IDE
+# IDE
 .vscode
+
+# Generated files
+cpp.packages.json

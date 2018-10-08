@@ -6,7 +6,10 @@
     "init": "tsc && node bin/index.js init",
     "build": "tsc --outDir bin",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "test": "mocha -r ts-node/register src/**/*.spec.ts"
+    "test": "jest --coverage"
+  },
+  "jest": {
+    "preset": "ts-jest"
   },
   "repository": {
     "type": "git",
@@ -19,26 +22,21 @@
   },
   "homepage": "https://github.com/LucasLacerdaCL/cpp-package-manager#readme",
   "dependencies": {
+    "@types/jest": "^23.3.4",
     "chalk": "^2.4.1",
     "figlet": "^1.2.0",
     "inquirer": "^6.2.0",
     "lodash": "^4.17.11",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "ts-jest": "^23.10.4"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.6",
     "@types/figlet": "^1.2.0",
     "@types/inquirer": "0.0.43",
     "@types/lodash": "^4.14.116",
     "@types/minimist": "^1.2.0",
-    "@types/mocha": "^5.2.5",
     "@types/node": "^10.11.4",
-    "@types/sinon": "^5.0.4",
-    "@types/touch": "^3.1.0",
-    "chai": "^4.2.0",
-    "mocha": "^5.2.0",
-    "sinon": "^6.3.5",
-    "ts-node": "^7.0.1",
+    "jest": "^23.6.0",
     "tslint": "^5.11.0",
     "typescript": "^3.1.1",
     "typings": "^2.1.1"
