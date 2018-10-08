@@ -6,6 +6,7 @@ import Log from './options/log/log';
 
 export default class StartUp {
   private parameter: string;
+  private log = new Log();
 
   constructor() {
     try {
@@ -17,15 +18,14 @@ export default class StartUp {
       this.parameter = argv(process.argv.slice(1))._[1];
       this.checkParameter();
     } catch (error) {
-      // TO-DO: Remove unused variable.
-      const log = new Log(error);
+      this.log.createLog(error);
     }
   }
 
   private checkParameter() {
     if (this.parameter === 'init') {
       // TO-DO: Remove unused variable.
-      const init = new Init();
+      const init = new Init(this.log);
     } else {
       console.log(chalk.red('Unknow command.'));
     }

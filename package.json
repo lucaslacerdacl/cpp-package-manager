@@ -23,8 +23,7 @@
     "figlet": "^1.2.0",
     "inquirer": "^6.2.0",
     "lodash": "^4.17.11",
-    "minimist": "^1.2.0",
-    "touch": "^3.1.0"
+    "minimist": "^1.2.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.6",
@@ -33,15 +32,15 @@
     "@types/lodash": "^4.14.116",
     "@types/minimist": "^1.2.0",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.10.1",
-    "@types/sinon": "^5.0.3",
+    "@types/node": "^10.11.4",
+    "@types/sinon": "^5.0.4",
     "@types/touch": "^3.1.0",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "sinon": "^6.3.5",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.3",
+    "typescript": "^3.1.1",
     "typings": "^2.1.1"
   }
 }

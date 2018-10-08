@@ -1,4 +1,3 @@
-import * as touch from 'touch';
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import Log from '../log/log';
@@ -9,7 +8,7 @@ import InitModel from './init-questions.model';
 
 export default class Init {
 
-  constructor() {
+  constructor(private log: Log) {
     if (this.isConfigFileAvaliable()) {
       console.error('Já existe um arquivo de configuração.');
     } else {
@@ -21,9 +20,9 @@ export default class Init {
     return _.includes(fs.readdirSync('.'), 'cpp.packages.json');
   }
 
-  private getConfigFileResponse() {
+  private async getConfigFileResponse() {
     const questions = this.createConfigFileQuestions();
-    inquirer.prompt(questions)
+    await inquirer.prompt(questions)
     .then(this.createConfigFile)
     .catch(this.createLogFile);
   }
@@ -36,25 +35,13 @@ export default class Init {
     return new Array<{}>(name.toObject(), description.toObject(), version.toObject());
   }
 
-  private checkIfInputIsValid(): Function {
-    const validateInput = (value) => {
-      if (value.length) {
-        return true;
-      } else {
-        return 'Please enter a value.';
-      }
-    };
-    return validateInput;
-  }
-
   private createConfigFile(initResult: any) {
-    touch('cpp.packages.json');
+    fs.openSync('cpp.packages.json', 'w');
     const configFile = new ConfigFileModel(initResult);
     fs.writeFileSync('cpp.packages.json', JSON.stringify(configFile, null, 2));
-    console.log('Arquivo criado com sucesso!');
   }
 
   private createLogFile(error: any) {
-    const log = new Log(error);
+    this.log.createLog(error);
   }
 }

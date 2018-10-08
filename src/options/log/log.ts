@@ -1,10 +1,9 @@
-import * as touch from 'touch';
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import LogModel from './log.model';
 
 export default class Log {
-  constructor(error: any) {
+  public createLog(error: any) {
     const formatedError = new LogModel(error);
     if (!this.isLogFileAvaliable()) {
       this.createLogFile(formatedError);
@@ -19,10 +18,8 @@ export default class Log {
   }
 
   private createLogFile(error: LogModel) {
-    touch('cpp.packages.log.json')
-      .then(() => {
-        fs.writeFileSync('cpp.packages.log.json', JSON.stringify([error], null, 2));
-      });
+    fs.openSync('cpp.packages.log.json', 'w');
+    fs.writeFileSync('cpp.packages.log.json', JSON.stringify([error], null, 2));
   }
 
   private writeLogFile(error: LogModel) {
