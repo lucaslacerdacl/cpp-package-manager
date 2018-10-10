@@ -2,7 +2,6 @@ import * as fs from 'fs';
 import DependenciesModel from '../dependencies.model';
 import Install from './install';
 import ConfigFileModel from '../config-file.model';
-import { stringify } from 'querystring';
 
 describe('Install', () => {
 
@@ -15,7 +14,7 @@ describe('Install', () => {
 
     new Install();
 
-    expect(spyReadFileSync).toHaveBeenCalledTimes(2);
+    expect(spyReadFileSync).toHaveBeenCalledTimes(1);
     expect(spyReadFileSync).toHaveBeenCalledWith(process.cwd() + '/cpp.packages.json');
   });
 });
