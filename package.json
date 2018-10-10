@@ -10,7 +10,9 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "roots": ["src"]
+    "roots": [
+      "src"
+    ]
   },
   "repository": {
     "type": "git",
