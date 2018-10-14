@@ -4,6 +4,8 @@ import ConfigFileModel from '../config-file.model';
 import * as inquirer from 'inquirer';
 import * as path from 'path';
 import InitModel from './init-questions.model';
+import * as figlet from 'figlet';
+import chalk from 'chalk';
 
 export default class Init {
 
@@ -11,6 +13,11 @@ export default class Init {
     if (this.isConfigFileAvaliable()) {
       console.error('Já existe um arquivo de configuração.');
     } else {
+      console.log(
+        chalk.yellow(
+          figlet.textSync('CPM', { horizontalLayout: 'full' })
+        )
+      );
       this.getConfigFileResponse();
     }
   }

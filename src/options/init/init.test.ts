@@ -1,9 +1,10 @@
 import Init from './init';
 import * as fs from 'fs';
 import * as inquirer from 'inquirer';
-import * as path from 'path';
 import InitModel from './init-questions.model';
 import ConfigFileModel from '../config-file.model';
+import * as figlet from 'figlet';
+import chalk from 'chalk';
 
 describe('Init', () => {
 
@@ -29,8 +30,9 @@ describe('Init', () => {
   });
 
   it('should ask questions and create config file', async () => {
-    const mockPath = '/Users/johndoe/Documents/cpp-package-manager';
     spyReaddirSync.mockReturnValue([]);
+    const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const spyFiglet = jest.spyOn(figlet, 'textSync').mockImplementation(() => {}).mockReturnValue('Test');
     const name = new InitModel('name', 'input', 'Enter a name for the project', 'cpp-package-manager');
     const description = new InitModel('description', 'input', 'Enter a description for the project', '');
     const version = new InitModel('version', 'input', 'Enter a version for the project', '1.0.0');
@@ -52,6 +54,12 @@ describe('Init', () => {
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
     expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.packages.json', JSON.stringify(configFile, null, 2));
+
+    expect(spyFiglet).toHaveBeenCalledTimes(1);
+    expect(spyFiglet).toHaveBeenCalledWith('CPM', { horizontalLayout: 'full' });
+
+    expect(spyConsoleLog).toHaveBeenCalledTimes(1);
+    expect(spyConsoleLog).toHaveBeenCalledWith(chalk.yellow('Test'));
 
   });
 });
