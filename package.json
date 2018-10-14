@@ -1,12 +1,11 @@
 {
-  "name": "cpm",
+  "name": "cpppm",
   "version": "1.0.0",
   "description": "Package manager for Cpp.",
   "scripts": {
     "build": "tsc --outDir bin",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "test": "jest --coverage",
-    "publish": "npm run lint && npm run build "
+    "test": "jest --coverage"
   },
   "bin": {
     "cpm": "bin/index.js"

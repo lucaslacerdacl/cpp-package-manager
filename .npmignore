@@ -1,0 +1,9 @@
+#IDE
+.vscode
+
+# Generated files
+cpp.packages.json
+cpp_modules
+
+# Source files
+src
