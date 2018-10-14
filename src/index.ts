@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import * as argv from 'minimist';
 import Init from './options/init/init';
 import Install from './options/install/install';
+import Build from './options/build/build';
 
 export default class StartUp {
   private parameter: string;
@@ -18,6 +19,8 @@ export default class StartUp {
       new Init();
     } else if (this.parameter === 'install') {
       new Install();
+    } else if (this.parameter === 'build') {
+      new Build();
     } else {
       console.log(chalk.red('Unknow command.'));
     }
