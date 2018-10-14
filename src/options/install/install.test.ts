@@ -7,7 +7,27 @@ const child_process = require('child_process');
 
 describe('Install', () => {
 
-  it('Read dependencies and install', () => {
+  const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
+
+  beforeEach(() => {
+    spyReaddirSync.mockReset();
+  });
+
+  it('should not find config gile', () => {
+    const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    spyReaddirSync.mockReturnValue([]);
+
+    new Install();
+
+    expect(spyConsoleError).toHaveBeenCalledTimes(1);
+    expect(spyConsoleError).toHaveBeenCalledWith('Não existe um arquivo de configuração.');
+    expect(spyReaddirSync).toHaveBeenCalledTimes(1);
+    expect(spyReaddirSync).toHaveBeenCalledWith('.');
+
+  });
+
+  it('should read dependencies and install', () => {
+    spyReaddirSync.mockReturnValue(['cpp.packages.json']);
     const configFile = new ConfigFileModel({ name: 'test', description: 'testDesc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
@@ -24,9 +44,8 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledTimes(1);
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, `${process.cwd()}/cpp_modules/${dependencie.name}`);
 
-    expect(spyChildProcessExec).toHaveBeenCalledTimes(2);
+    expect(spyChildProcessExec).toHaveBeenCalledTimes(1);
     expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm install', {cwd: `${process.cwd()}/cpp_modules/${dependencie.name}`});
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, 'cpm serve', {cwd: `${process.cwd()}/cpp_modules/${dependencie.name}`});
 
   });
 });
