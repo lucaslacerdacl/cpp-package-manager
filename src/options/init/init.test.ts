@@ -9,14 +9,10 @@ describe('Init', () => {
 
   const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
   const spyInquirer = jest.spyOn(inquirer, 'prompt');
-  const spyProcess = jest.spyOn(process, 'cwd');
-  const spyPath = jest.spyOn(path, 'basename');
 
   beforeEach(() => {
     spyReaddirSync.mockReset();
     spyInquirer.mockReset();
-    spyProcess.mockReset();
-    spyPath.mockReset();
   });
 
   it('should check and advise if the configuration file already exists', () => {
@@ -35,8 +31,6 @@ describe('Init', () => {
   it('should ask questions and create config file', async () => {
     const mockPath = '/Users/johndoe/Documents/cpp-package-manager';
     spyReaddirSync.mockReturnValue([]);
-    spyProcess.mockReturnValue(mockPath);
-    spyPath.mockReturnValue('cpp-package-manager');
     const name = new InitModel('name', 'input', 'Enter a name for the project', 'cpp-package-manager');
     const description = new InitModel('description', 'input', 'Enter a description for the project', '');
     const version = new InitModel('version', 'input', 'Enter a version for the project', '1.0.0');
@@ -52,12 +46,6 @@ describe('Init', () => {
 
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
-
-    expect(spyProcess).toHaveBeenCalledTimes(1);
-    expect(spyProcess).toHaveBeenCalledWith();
-
-    expect(spyPath).toHaveBeenCalledTimes(1);
-    expect(spyPath).toHaveBeenCalledWith(mockPath);
 
     expect(spyInquirer).toHaveBeenCalledTimes(1);
     expect(spyInquirer).toHaveBeenCalledWith(questions);
