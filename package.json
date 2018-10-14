@@ -1,5 +1,5 @@
 {
-  "name": "cpp-package-manager",
+  "name": "cpm",
   "version": "1.0.0",
   "description": "Package manager for Cpp.",
   "scripts": {
