@@ -7,7 +7,7 @@ const child_process = require('child_process');
 
 describe('Install', () => {
 
-  it('Read dependencies', () => {
+  it('Read dependencies and install', () => {
     const configFile = new ConfigFileModel({ name: 'test', description: 'testDesc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
