@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import DependenciesModel from '../dependencies.model';
-import * as nodegit from 'nodegit';
 import { exec } from 'child_process';
 
 export default class Build {
@@ -9,7 +8,7 @@ export default class Build {
     if (this.isConfigFileAvaliable()) {
       this.installDependencies();
     } else {
-      console.error('Não existe um arquivo de configuração.');
+      console.error('There is no configuration file.');
     }
   }
 

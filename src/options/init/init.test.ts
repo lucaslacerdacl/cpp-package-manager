@@ -22,10 +22,11 @@ describe('Init', () => {
 
     new Init();
 
-    expect(spyConsoleError).toHaveBeenCalledTimes(1);
-    expect(spyConsoleError).toHaveBeenCalledWith('Já existe um arquivo de configuração.');
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
+
+    expect(spyConsoleError).toHaveBeenCalledTimes(1);
+    expect(spyConsoleError).toHaveBeenCalledWith('A configuration file already exists.');
 
   });
 

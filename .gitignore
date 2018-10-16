@@ -68,4 +68,5 @@ typings/
 
 # Generated files
 cpp.packages.json
+cpp.log.json
 cpp_modules

@@ -18,7 +18,8 @@ describe('Build', () => {
     new Build();
 
     expect(spyConsoleError).toHaveBeenCalledTimes(1);
-    expect(spyConsoleError).toHaveBeenCalledWith('Não existe um arquivo de configuração.');
+    expect(spyConsoleError).toHaveBeenCalledWith('There is no configuration file.');
+
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
 
@@ -35,6 +36,9 @@ describe('Build', () => {
     const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => {});
 
     new Build();
+
+    expect(spyReaddirSync).toHaveBeenCalledTimes(1);
+    expect(spyReaddirSync).toHaveBeenCalledWith('.');
 
     expect(spyReadFileSync).toHaveBeenCalledTimes(1);
     expect(spyReadFileSync).toHaveBeenCalledWith(`${process.cwd()}/cpp.packages.json`);

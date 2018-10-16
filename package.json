@@ -1,6 +1,6 @@
 {
-  "name": "c-plus-plus-package-manager",
-  "version": "1.1.0",
+  "name": "cpp-package-manager",
+  "version": "1.0.0",
   "description": "Package manager for Cpp.",
   "scripts": {
     "build": "tsc --outDir bin",
@@ -27,14 +27,12 @@
   },
   "homepage": "https://github.com/LucasLacerdaCL/cpp-package-manager#readme",
   "dependencies": {
-    "@types/jest": "^23.3.6",
     "chalk": "^2.4.1",
     "figlet": "^1.2.1",
     "inquirer": "^6.2.0",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
-    "nodegit": "^0.22.2",
-    "ts-jest": "^23.10.4"
+    "nodegit": "^0.22.2"
   },
   "devDependencies": {
     "@types/figlet": "^1.2.0",
@@ -43,6 +41,8 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.11.7",
     "@types/nodegit": "^0.22.3",
+    "@types/jest": "^23.3.6",
+    "ts-jest": "^23.10.4",
     "jest": "^23.6.0",
     "tslint": "^5.11.0",
     "typescript": "^3.1.3",

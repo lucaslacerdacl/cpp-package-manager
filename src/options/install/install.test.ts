@@ -13,22 +13,23 @@ describe('Install', () => {
     spyReaddirSync.mockReset();
   });
 
-  it('should not find config gile', () => {
+  it('should not find config file', () => {
     const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     spyReaddirSync.mockReturnValue([]);
 
     new Install();
 
-    expect(spyConsoleError).toHaveBeenCalledTimes(1);
-    expect(spyConsoleError).toHaveBeenCalledWith('Não existe um arquivo de configuração.');
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
+
+    expect(spyConsoleError).toHaveBeenCalledTimes(1);
+    expect(spyConsoleError).toHaveBeenCalledWith('There is no configuration file.');
 
   });
 
   it('should read dependencies and install', () => {
     spyReaddirSync.mockReturnValue(['cpp.packages.json']);
-    const configFile = new ConfigFileModel({ name: 'test', description: 'testDesc', version: '1.0.0' });
+    const configFile = new ConfigFileModel({ name: 'test', description: 'desc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
     const file = Buffer.from(JSON.stringify(configFile));
@@ -37,6 +38,9 @@ describe('Install', () => {
     const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => {});
 
     new Install();
+
+    expect(spyReaddirSync).toHaveBeenCalledTimes(1);
+    expect(spyReaddirSync).toHaveBeenCalledWith('.');
 
     expect(spyReadFileSync).toHaveBeenCalledTimes(1);
     expect(spyReadFileSync).toHaveBeenCalledWith(`${process.cwd()}/cpp.packages.json`);
