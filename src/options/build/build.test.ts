@@ -6,9 +6,10 @@ const child_process = require('child_process');
 
 describe('Build', () => {
   const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
-
+  const spyReadFileSync = jest.spyOn(fs, 'readFileSync');
   beforeEach(() => {
     spyReaddirSync.mockReset();
+    spyReadFileSync.mockReset();
   });
 
   it('should not find config gile', () => {
@@ -31,7 +32,7 @@ describe('Build', () => {
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
     const file = Buffer.from(JSON.stringify(configFile));
-    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {}).mockReturnValueOnce(file);
+    spyReadFileSync.mockImplementation(() => { }).mockReturnValueOnce(file);
     const directory = {cwd: `${process.cwd()}/cpp_modules/${dependencie.name}`};
     const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => {});
 

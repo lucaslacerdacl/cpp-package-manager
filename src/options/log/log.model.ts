@@ -6,6 +6,8 @@ export default class LogModel {
   constructor(error: any) {
     this.error = error;
     this.date = new Date();
+    this.date.setMilliseconds(0);
+    this.date.setSeconds(0);
   }
 
 }

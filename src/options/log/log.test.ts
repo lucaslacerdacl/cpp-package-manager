@@ -7,16 +7,18 @@ describe('Log', () => {
   const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
   const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
   const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
+  const spyReadFileSync = jest.spyOn(fs, 'readFileSync');
 
 
   beforeEach(() => {
     spyWriteFileSync.mockReset();
     spyReaddirSync.mockReset();
     spyConsoleLog.mockReset();
+    spyReadFileSync.mockReset();
   });
 
   it('should create log file', () => {
-    spyReaddirSync.mockReturnValue(['cpp.log.json']);
+    spyReaddirSync.mockReturnValue([]);
     const errMessage = 'err';
 
     new Log(errMessage);
@@ -29,16 +31,16 @@ describe('Log', () => {
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
     const errors = new Array<LogModel>(new LogModel(errMessage));
-    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.log.json', JSON.stringify(errors), null, 2);
+    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.log.json', JSON.stringify(errors, null, 2));
 
   });
 
   it('should add error in log file', () => {
-    spyReaddirSync.mockReturnValue([]);
+    spyReaddirSync.mockReturnValue(['cpp.log.json']);
     const errMessage = 'err 1';
     const error = new Array<LogModel>(new LogModel('err 2'));
     const file = Buffer.from(JSON.stringify(error));
-    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {}).mockReturnValue(file);
+    spyReadFileSync.mockImplementation(() => {}).mockReturnValue(file);
 
     new Log(errMessage);
 
@@ -52,8 +54,8 @@ describe('Log', () => {
     expect(spyReadFileSync).toHaveBeenCalledWith('cpp.log.json');
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
-    const errors = new Array<LogModel>(new LogModel(errMessage), new LogModel('err 2'));
-    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.log.json', JSON.stringify(errors), null, 2);
+    const errors = new Array<LogModel>(new LogModel('err 2'), new LogModel(errMessage));
+    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.log.json', JSON.stringify(errors, null, 2));
 
   });
 
