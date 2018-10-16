@@ -9,8 +9,7 @@ describe('Log', () => {
   const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
   const spyReadFileSync = jest.spyOn(fs, 'readFileSync');
 
-
-  beforeEach(() => {
+  afterEach(() => {
     spyWriteFileSync.mockReset();
     spyReaddirSync.mockReset();
     spyConsoleLog.mockReset();

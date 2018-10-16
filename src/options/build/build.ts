@@ -6,7 +6,7 @@ import { exec } from 'child_process';
 export default class Build {
   constructor() {
     if (this.isConfigFileAvaliable()) {
-      this.installDependencies();
+      this.generateBinaries();
     } else {
       console.error('There is no configuration file.');
     }
@@ -16,7 +16,7 @@ export default class Build {
     return _.includes(fs.readdirSync('.'), 'cpp.packages.json');
   }
 
-  private installDependencies() {
+  private generateBinaries() {
     const file = JSON.parse(fs.readFileSync(`${process.cwd()}/cpp.packages.json`).toString());
     _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
       const directory = { cwd: `${process.cwd()}/cpp_modules/${dependencie.name}` };

@@ -23,11 +23,8 @@ export default class Log {
   }
 
   private writeLogFile(error: LogModel) {
-    const file = fs.readFileSync('cpp.log.json').toString();
-    let formatedFile = [];
-    if (file.length) {
-      formatedFile = JSON.parse(file);
-    }
+    const file = fs.readFileSync('cpp.log.json');
+    const formatedFile = JSON.parse(file.toString());
     formatedFile.push(error);
     fs.writeFileSync('cpp.log.json', JSON.stringify(formatedFile, null, 2));
   }

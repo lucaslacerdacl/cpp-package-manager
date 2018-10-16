@@ -5,6 +5,7 @@ import * as argv from 'minimist';
 import Init from './options/init/init';
 import Install from './options/install/install';
 import Build from './options/build/build';
+import Log from './options/log/log';
 
 export default class StartUp {
   private parameter: string;
@@ -27,4 +28,9 @@ export default class StartUp {
   }
 }
 
-new StartUp();
+try {
+  new StartUp();
+} catch (err) {
+  new Log(err);
+}
+

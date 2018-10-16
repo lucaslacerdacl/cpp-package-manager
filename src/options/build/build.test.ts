@@ -7,6 +7,7 @@ const child_process = require('child_process');
 describe('Build', () => {
   const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
   const spyReadFileSync = jest.spyOn(fs, 'readFileSync');
+
   beforeEach(() => {
     spyReaddirSync.mockReset();
     spyReadFileSync.mockReset();
