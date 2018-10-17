@@ -5,6 +5,7 @@ import InitModel from './init-questions.model';
 import ConfigFileModel from '../config-file.model';
 import * as figlet from 'figlet';
 import chalk from 'chalk';
+import * as path from 'path';
 
 describe('Init', () => {
 
@@ -34,7 +35,7 @@ describe('Init', () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
     const spyFiglet = jest.spyOn(figlet, 'textSync').mockImplementation(() => {}).mockReturnValue('Test');
-    const name = new InitModel('name', 'input', 'Enter a name for the project', 'cpp-package-manager');
+    const name = new InitModel('name', 'input', 'Enter a name for the project', path.basename(process.cwd()));
     const description = new InitModel('description', 'input', 'Enter a description for the project', '');
     const version = new InitModel('version', 'input', 'Enter a version for the project', '1.0.0');
     const questions = new Array<{}>(name.toObject(), description.toObject(), version.toObject());
