@@ -4,20 +4,18 @@ import LogModel from './log.model';
 
 describe('Log', () => {
 
-  const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
-  const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
-  const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
-  const spyReadFileSync = jest.spyOn(fs, 'readFileSync');
-
   afterEach(() => {
-    spyWriteFileSync.mockReset();
-    spyReaddirSync.mockReset();
-    spyConsoleLog.mockReset();
-    spyReadFileSync.mockReset();
+    jest.restoreAllMocks();
+  });
+
+  beforeEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should create log file', () => {
-    spyReaddirSync.mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
+    const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { });
+    const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
     const errMessage = 'err';
 
     new Log(errMessage);
@@ -35,11 +33,13 @@ describe('Log', () => {
   });
 
   it('should add error in log file', () => {
-    spyReaddirSync.mockReturnValue(['cpp.log.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.log.json']);
+    const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { });
+    const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
     const errMessage = 'err 1';
     const error = new Array<LogModel>(new LogModel('err 2'));
     const file = Buffer.from(JSON.stringify(error));
-    spyReadFileSync.mockImplementation(() => {}).mockReturnValue(file);
+    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {}).mockReturnValue(file);
 
     new Log(errMessage);
 

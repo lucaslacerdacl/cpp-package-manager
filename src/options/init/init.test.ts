@@ -8,17 +8,17 @@ import chalk from 'chalk';
 
 describe('Init', () => {
 
-  const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
-  const spyInquirer = jest.spyOn(inquirer, 'prompt');
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   beforeEach(() => {
-    spyReaddirSync.mockReset();
-    spyInquirer.mockReset();
+    jest.restoreAllMocks();
   });
 
   it('should check and advise if the configuration file already exists', () => {
     const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    spyReaddirSync.mockReturnValue(['cpp.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.packages.json']);
 
     new Init();
 
@@ -31,7 +31,7 @@ describe('Init', () => {
   });
 
   it('should ask questions and create config file', async () => {
-    spyReaddirSync.mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
     const spyFiglet = jest.spyOn(figlet, 'textSync').mockImplementation(() => {}).mockReturnValue('Test');
     const name = new InitModel('name', 'input', 'Enter a name for the project', 'cpp-package-manager');
@@ -40,7 +40,7 @@ describe('Init', () => {
     const questions = new Array<{}>(name.toObject(), description.toObject(), version.toObject());
     const initResult = { name: 'name', description: 'description', version: 'version' };
 
-    spyInquirer.mockResolvedValue(initResult);
+    const spyInquirer = jest.spyOn(inquirer, 'prompt').mockResolvedValue(initResult);
 
     const configFile = new ConfigFileModel(initResult);
     const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});

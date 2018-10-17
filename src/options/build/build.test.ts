@@ -5,17 +5,18 @@ import ConfigFileModel from '../config-file.model';
 const child_process = require('child_process');
 
 describe('Build', () => {
-  const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
-  const spyReadFileSync = jest.spyOn(fs, 'readFileSync');
 
-  beforeEach(() => {
-    spyReaddirSync.mockReset();
-    spyReadFileSync.mockReset();
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
-  it('should not find config gile', () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('should not find config file', () => {
     const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    spyReaddirSync.mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
 
     new Build();
 
@@ -28,14 +29,14 @@ describe('Build', () => {
   });
 
   it('should read dependencies and compile binaries', () => {
-    spyReaddirSync.mockReturnValue(['cpp.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.packages.json']);
     const configFile = new ConfigFileModel({ name: 'test', description: 'testDesc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
     const file = Buffer.from(JSON.stringify(configFile));
-    spyReadFileSync.mockImplementation(() => { }).mockReturnValueOnce(file);
+    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { }).mockReturnValueOnce(file);
     const directory = {cwd: `${process.cwd()}/cpp_modules/${dependencie.name}`};
-    const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => {});
+    const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => { });
 
     new Build();
 
@@ -48,5 +49,6 @@ describe('Build', () => {
     expect(spyChildProcessExec).toHaveBeenCalledTimes(1);
     expect(spyChildProcessExec).toHaveBeenCalledWith('g++ -c src/**/*.cpp && mkdir dist && mv *.o dist/', directory);
 
+    spyChildProcessExec.mockReset();
   });
 });

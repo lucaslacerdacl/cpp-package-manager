@@ -7,15 +7,17 @@ const child_process = require('child_process');
 
 describe('Install', () => {
 
-  const spyReaddirSync = jest.spyOn(fs, 'readdirSync');
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   beforeEach(() => {
-    spyReaddirSync.mockReset();
+    jest.restoreAllMocks();
   });
 
   it('should not find config file', () => {
     const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    spyReaddirSync.mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
 
     new Install();
 
@@ -28,7 +30,7 @@ describe('Install', () => {
   });
 
   it('should read dependencies and install', () => {
-    spyReaddirSync.mockReturnValue(['cpp.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.packages.json']);
     const configFile = new ConfigFileModel({ name: 'test', description: 'desc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
