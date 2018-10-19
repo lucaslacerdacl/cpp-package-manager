@@ -6,7 +6,7 @@
 ## Installing / Getting started
 
 ```shell
-npm install cpp-package-manager
+npm install cpp-package-manager -g
 ```
 
 This project provide three features for manager cpp package.
