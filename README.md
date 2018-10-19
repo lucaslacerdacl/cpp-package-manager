@@ -27,7 +27,7 @@ This command will generate a ```cpm.packages.json``` file with the following pro
 }
 ```
 
-After generate the file you can add packages hosted in ```GitHub```, just like the example:
+After generate the file you can add packages with ```Git``` https url, just like the example:
 ```json
 "dependencies": [
     {
@@ -88,7 +88,7 @@ The project is build and release in  [Azure DevOps](https://dev.azure.com/lucasl
 
 ## Versioning
 
-This project is using the pattern ```MAJOR.MINOR.PATCH```. You read more in [Semantic Versioning](http://semver.org/).
+This project is using the pattern ```MAJOR.MINOR.PATCH```. You can read more in [Semantic Versioning](http://semver.org/).
 
 
 ## Tests
@@ -113,26 +113,24 @@ This project is using ```ts-jest``` preset and run on ```src``` folder.
 
 
 ## Style guide
-
-### Options
-All commands is in options folder.
-
     .
     └── src
         ├── assets
         ├── options
         └── index.ts
-Each command has his own model and test.
 
 ### Assets
 Created in first moment to store project logo. In the future can used to hosted static files.
+
+### Options
+All commands is in options folder. Each command has his own model and test.
 
 ### Index
 Get command and choose the options.
 
 ## Api Reference
 Check the proccess in Medium:
-[SemVer](http://semver.org/)
+[Criando um CLI com Node.js e Typescript](http://semver.org/)
 
 ## Licensing
 
