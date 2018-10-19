@@ -5,6 +5,10 @@
 
 ## Installing / Getting started
 
+```shell
+npm install cpp-package-manager
+```
+
 This project provide three features for manager cpp package.
 
 ### Init
