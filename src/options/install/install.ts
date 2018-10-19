@@ -22,7 +22,7 @@ export default class Install {
     _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
       nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpp_modules/${dependencie.name}`);
       const directory = { cwd: `${process.cwd()}/cpp_modules/${dependencie.name}` };
-      exec('cpm install', directory);
+      exec('cpm install && cpm build', directory);
     });
   }
 }

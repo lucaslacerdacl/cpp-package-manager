@@ -47,11 +47,13 @@ describe('Install', () => {
     expect(spyReadFileSync).toHaveBeenCalledTimes(1);
     expect(spyReadFileSync).toHaveBeenCalledWith(`${process.cwd()}/cpp.packages.json`);
 
+    const path = `${process.cwd()}/cpp_modules/${dependencie.name}`;
+
     expect(spyNodeGitClone).toHaveBeenCalledTimes(1);
-    expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, `${process.cwd()}/cpp_modules/${dependencie.name}`);
+    expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
     expect(spyChildProcessExec).toHaveBeenCalledTimes(1);
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm install', {cwd: `${process.cwd()}/cpp_modules/${dependencie.name}`});
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm install && cpm build', {cwd: path});
 
   });
 });
