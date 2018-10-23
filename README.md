@@ -135,7 +135,3 @@ Check the proccess in Medium:
 ## Licensing
 
 License under MIT.
-
-
-
-
