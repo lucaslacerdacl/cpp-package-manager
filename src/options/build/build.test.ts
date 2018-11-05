@@ -51,9 +51,8 @@ describe('Build', () => {
     expect(spyChildProcessExec).toHaveBeenCalledTimes(2);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/`;
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, `${cleanDistFolder} ${generateBinariesInDistFolder}`, {cwd: process.cwd()});
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, 'cpm build', directory);
-
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm build', directory);
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, `${cleanDistFolder} ${generateBinariesInDistFolder}`, {cwd: process.cwd()});
   });
 
   it('should read dependencies and compile binaries based in build file', () => {
@@ -71,8 +70,8 @@ describe('Build', () => {
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
 
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
-    .mockReturnValueOnce(fileConfigBuildProject)
-    .mockReturnValueOnce(fileConfigProjectProject);
+    .mockReturnValueOnce(fileConfigProjectProject)
+    .mockReturnValueOnce(fileConfigBuildProject);
 
     const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };
     const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => { });
@@ -84,17 +83,17 @@ describe('Build', () => {
     expect(spyReaddirSync).toHaveBeenNthCalledWith(2, '.');
 
     expect(spyReadFileSync).toHaveBeenCalledTimes(2);
-    expect(spyReadFileSync).toHaveBeenNthCalledWith(1, `${process.cwd()}/cpm.build.json`);
-    expect(spyReadFileSync).toHaveBeenNthCalledWith(2, `${process.cwd()}/cpm.packages.json`);
+    expect(spyReadFileSync).toHaveBeenNthCalledWith(1, `${process.cwd()}/cpm.packages.json`);
+    expect(spyReadFileSync).toHaveBeenNthCalledWith(2, `${process.cwd()}/cpm.build.json`);
 
     expect(spyChildProcessExec).toHaveBeenCalledTimes(2);
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm build', directory);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/ &&`;
     const compileProject = `g++ dist/${configBuildFile.binaries.join(' dist/')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyChildProcessExec)
-    .toHaveBeenNthCalledWith(1, `${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, 'cpm build', directory);
+    .toHaveBeenNthCalledWith(2, `${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
   });
 
   it('should read dependencies and compile binaries based in build file without fileName', () => {
@@ -111,8 +110,8 @@ describe('Build', () => {
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
 
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
-    .mockReturnValueOnce(fileConfigBuildProject)
-    .mockReturnValueOnce(fileConfigProjectProject);
+    .mockReturnValueOnce(fileConfigProjectProject)
+    .mockReturnValueOnce(fileConfigBuildProject);
 
     const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };
     const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => { });
@@ -124,17 +123,17 @@ describe('Build', () => {
     expect(spyReaddirSync).toHaveBeenNthCalledWith(2, '.');
 
     expect(spyReadFileSync).toHaveBeenCalledTimes(2);
-    expect(spyReadFileSync).toHaveBeenNthCalledWith(1, `${process.cwd()}/cpm.build.json`);
-    expect(spyReadFileSync).toHaveBeenNthCalledWith(2, `${process.cwd()}/cpm.packages.json`);
+    expect(spyReadFileSync).toHaveBeenNthCalledWith(1, `${process.cwd()}/cpm.packages.json`);
+    expect(spyReadFileSync).toHaveBeenNthCalledWith(2, `${process.cwd()}/cpm.build.json`);
 
     expect(spyChildProcessExec).toHaveBeenCalledTimes(2);
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm build', directory);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/ &&`;
     const compileProject = `g++ dist/${configBuildFile.binaries.join(' dist/')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyChildProcessExec)
-    .toHaveBeenNthCalledWith(1, `${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, 'cpm build', directory);
+    .toHaveBeenNthCalledWith(2, `${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
   });
 
   it('should read dependencies and not compile binaries because the build file', () => {
@@ -149,8 +148,8 @@ describe('Build', () => {
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
 
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
-    .mockReturnValueOnce(fileConfigBuildProject)
-    .mockReturnValueOnce(fileConfigProjectProject);
+    .mockReturnValueOnce(fileConfigProjectProject)
+    .mockReturnValueOnce(fileConfigBuildProject);
 
     try {
       new Build();
@@ -162,8 +161,8 @@ describe('Build', () => {
     expect(spyReaddirSync).toHaveBeenNthCalledWith(1, '.');
     expect(spyReaddirSync).toHaveBeenNthCalledWith(2, '.');
 
-    expect(spyReadFileSync).toHaveBeenCalledTimes(1);
-    expect(spyReadFileSync).toHaveBeenNthCalledWith(1, `${process.cwd()}/cpm.build.json`);
-
+    expect(spyReadFileSync).toHaveBeenCalledTimes(2);
+    expect(spyReadFileSync).toHaveBeenNthCalledWith(1, `${process.cwd()}/cpm.packages.json`);
+    expect(spyReadFileSync).toHaveBeenNthCalledWith(2, `${process.cwd()}/cpm.build.json`);
   });
 });
