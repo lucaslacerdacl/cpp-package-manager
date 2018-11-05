@@ -1,6 +1,6 @@
 {
   "name": "cpp-package-manager",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "description": "Package manager for Cpp.",
   "scripts": {
     "build": "tsc --outDir bin",
