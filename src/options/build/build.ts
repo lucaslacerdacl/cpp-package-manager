@@ -18,13 +18,13 @@ export default class Build {
   }
 
   private generateBinaries() {
+    this.generateDependenciesBinaries();
     const buildCommand = 'rm -rf dist && mkdir dist && g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/';
     if (this.checkFileExists('cpm.build.json')) {
       this.generateBinariesWithConfigBuildFile(buildCommand);
     } else {
       exec(`${buildCommand}`, { cwd: process.cwd() });
     }
-    this.generateDependenciesBinaries();
   }
 
   private generateBinariesWithConfigBuildFile(buildCommand: string) {
