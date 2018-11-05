@@ -22,7 +22,8 @@ export default class Install {
     _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
       nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpm_modules/${dependencie.name}`);
       const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };
-      exec('cpm install && cpm build', directory);
+      exec('cpm install', directory);
     });
+    exec('cpm build', {cwd: process.cwd()});
   }
 }
