@@ -18,7 +18,7 @@ export default class Build {
   }
 
   private generateBinaries() {
-    const buildCommand = 'rm -rf dist && mkdir dist && g++ -c src/**/*.cpp **/*.c && mv *.o dist/';
+    const buildCommand = 'rm -rf dist && mkdir dist && g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/';
     if (this.checkFileExists('cpm.build.json')) {
       this.generateBinariesWithConfigBuildFile(buildCommand);
     } else {
