@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import DependenciesModel from '../dependencies.model';
 import Install from './install';
-import ConfigFileModel from '../config-file.model';
+import ConfigProjectModel from '../config-project.model';
 import * as nodegit from 'nodegit';
 const child_process = require('child_process');
 
@@ -30,8 +30,8 @@ describe('Install', () => {
   });
 
   it('should read dependencies and install', () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.packages.json']);
-    const configFile = new ConfigFileModel({ name: 'test', description: 'desc', version: '1.0.0' });
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
+    const configFile = new ConfigProjectModel({ name: 'test', description: 'desc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
     const file = Buffer.from(JSON.stringify(configFile));
@@ -45,9 +45,9 @@ describe('Install', () => {
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
 
     expect(spyReadFileSync).toHaveBeenCalledTimes(1);
-    expect(spyReadFileSync).toHaveBeenCalledWith(`${process.cwd()}/cpp.packages.json`);
+    expect(spyReadFileSync).toHaveBeenCalledWith(`${process.cwd()}/cpm.packages.json`);
 
-    const path = `${process.cwd()}/cpp_modules/${dependencie.name}`;
+    const path = `${process.cwd()}/cpm_modules/${dependencie.name}`;
 
     expect(spyNodeGitClone).toHaveBeenCalledTimes(1);
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);

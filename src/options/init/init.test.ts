@@ -2,7 +2,7 @@ import Init from './init';
 import * as fs from 'fs';
 import * as inquirer from 'inquirer';
 import InitModel from './init-questions.model';
-import ConfigFileModel from '../config-file.model';
+import ConfigProjectModel from '../config-project.model';
 import * as figlet from 'figlet';
 import chalk from 'chalk';
 import * as path from 'path';
@@ -19,7 +19,7 @@ describe('Init', () => {
 
   it('should check and advise if the configuration file already exists', () => {
     const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
 
     new Init();
 
@@ -43,7 +43,7 @@ describe('Init', () => {
 
     const spyInquirer = jest.spyOn(inquirer, 'prompt').mockResolvedValue(initResult);
 
-    const configFile = new ConfigFileModel(initResult);
+    const configFile = new ConfigProjectModel(initResult);
     const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
 
     await new Init();
@@ -55,7 +55,7 @@ describe('Init', () => {
     expect(spyInquirer).toHaveBeenCalledWith(questions);
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
-    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.packages.json', JSON.stringify(configFile, null, 2));
+    expect(spyWriteFileSync).toHaveBeenCalledWith('cpm.packages.json', JSON.stringify(configFile, null, 2));
 
     expect(spyFiglet).toHaveBeenCalledTimes(1);
     expect(spyFiglet).toHaveBeenCalledWith('CPM', { horizontalLayout: 'full' });

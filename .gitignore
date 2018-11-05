@@ -67,6 +67,7 @@ typings/
 .vscode
 
 # Generated files
-cpp.packages.json
-cpp.log.json
-cpp_modules
+cpm.packages.json
+cpm.log.json
+cpm.build.json
+cpm_modules

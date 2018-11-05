@@ -14,14 +14,14 @@ export default class Install {
   }
 
   private isConfigFileAvaliable(): boolean {
-    return _.includes(fs.readdirSync('.'), 'cpp.packages.json');
+    return _.includes(fs.readdirSync('.'), 'cpm.packages.json');
   }
 
   private installDependencies() {
-    const file = JSON.parse(fs.readFileSync(`${process.cwd()}/cpp.packages.json`).toString());
+    const file = JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString());
     _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
-      nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpp_modules/${dependencie.name}`);
-      const directory = { cwd: `${process.cwd()}/cpp_modules/${dependencie.name}` };
+      nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpm_modules/${dependencie.name}`);
+      const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };
       exec('cpm install && cpm build', directory);
     });
   }

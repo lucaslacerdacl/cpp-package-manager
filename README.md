@@ -43,10 +43,10 @@ After generate the file you can add packages with ```Git``` https url, just like
 cpm install
 ```
 
-This command will clone the projects and create the ```cpp_modules``` folder with packages already built in dist folder by each package.
+This command will clone the projects and create the ```cpm_modules``` folder with packages already built in dist folder by each package.
 
     .
-    └── cpp_modules
+    └── cpm_modules
         └── complex_number
           ├── dist                   # Compiled files
           └── src
@@ -57,11 +57,11 @@ This command will clone the projects and create the ```cpp_modules``` folder wit
 cpm build
 ```
 
-This command will generate binaries files in dist folder for all packages in ```cpp_modules```.
+This command will generate binaries files in dist folder for all packages in ```cpm_modules```.
 
 ### Log*
 
-If any error occured a ```cpp.log.json``` file will be created showing date and the description of the error.
+If any error occured a ```cpm.log.json``` file will be created showing date and the description of the error.
 
 *This feature is not avaliable as command.
 

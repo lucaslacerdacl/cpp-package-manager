@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import ConfigFileModel from '../config-file.model';
+import ConfigProjectModel from '../config-project.model';
 import * as inquirer from 'inquirer';
 import * as path from 'path';
 import InitModel from './init-questions.model';
@@ -23,7 +23,7 @@ export default class Init {
   }
 
   private isConfigFileAvaliable(): boolean {
-    return _.includes(fs.readdirSync('.'), 'cpp.packages.json');
+    return _.includes(fs.readdirSync('.'), 'cpm.packages.json');
   }
 
   private getConfigFileResponse() {
@@ -41,8 +41,8 @@ export default class Init {
   }
 
   private createConfigFile(initResult: any) {
-    const configFile = new ConfigFileModel(initResult);
-    fs.writeFileSync('cpp.packages.json', JSON.stringify(configFile, null, 2));
+    const configFile = new ConfigProjectModel(initResult);
+    fs.writeFileSync('cpm.packages.json', JSON.stringify(configFile, null, 2));
   }
 
 }

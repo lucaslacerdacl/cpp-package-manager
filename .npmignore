@@ -2,8 +2,8 @@
 .vscode
 
 # Generated files
-cpp.packages.json
-cpp_modules
+cpm.packages.json
+cpm_modules
 
 # Source files
 src

@@ -33,7 +33,7 @@
     "inquirer": "^6.2.0",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
-    "nodegit": "^0.22.2"
+    "nodegit": "^0.23.0"
   },
   "devDependencies": {
     "@types/figlet": "^1.2.0",

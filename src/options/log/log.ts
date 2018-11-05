@@ -15,18 +15,18 @@ export default class Log {
   }
 
   private isLogFileAvaliable(): boolean {
-    return _.includes(fs.readdirSync('.'), 'cpp.log.json');
+    return _.includes(fs.readdirSync('.'), 'cpm.log.json');
   }
 
   private createLogFile(error: LogModel) {
-    fs.writeFileSync('cpp.log.json', JSON.stringify([error], null, 2));
+    fs.writeFileSync('cpm.log.json', JSON.stringify([error], null, 2));
   }
 
   private writeLogFile(error: LogModel) {
-    const file = fs.readFileSync('cpp.log.json');
+    const file = fs.readFileSync('cpm.log.json');
     const formatedFile = JSON.parse(file.toString());
     formatedFile.push(error);
-    fs.writeFileSync('cpp.log.json', JSON.stringify(formatedFile, null, 2));
+    fs.writeFileSync('cpm.log.json', JSON.stringify(formatedFile, null, 2));
   }
 
 }

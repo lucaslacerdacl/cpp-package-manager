@@ -28,12 +28,12 @@ describe('Log', () => {
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
     const errors = new Array<LogModel>(new LogModel(errMessage));
-    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.log.json', JSON.stringify(errors, null, 2));
+    expect(spyWriteFileSync).toHaveBeenCalledWith('cpm.log.json', JSON.stringify(errors, null, 2));
 
   });
 
   it('should add error in log file', () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpp.log.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.log.json']);
     const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { });
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
     const errMessage = 'err 1';
@@ -50,11 +50,11 @@ describe('Log', () => {
     expect(spyConsoleLog).toHaveBeenCalledWith('An error has occurred! Check the log file.');
 
     expect(spyReadFileSync).toHaveBeenCalledTimes(1);
-    expect(spyReadFileSync).toHaveBeenCalledWith('cpp.log.json');
+    expect(spyReadFileSync).toHaveBeenCalledWith('cpm.log.json');
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
     const errors = new Array<LogModel>(new LogModel('err 2'), new LogModel(errMessage));
-    expect(spyWriteFileSync).toHaveBeenCalledWith('cpp.log.json', JSON.stringify(errors, null, 2));
+    expect(spyWriteFileSync).toHaveBeenCalledWith('cpm.log.json', JSON.stringify(errors, null, 2));
 
   });
 

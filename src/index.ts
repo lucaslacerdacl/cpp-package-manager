@@ -31,6 +31,6 @@ export default class StartUp {
 try {
   new StartUp();
 } catch (err) {
-  new Log(err);
+  new Log(err.message);
 }
 

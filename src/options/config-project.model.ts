@@ -1,6 +1,6 @@
 import DependenciesModel from './dependencies.model';
 
-export default class ConfigFileModel {
+export default class ConfigProjectModel {
   public name: string;
   public description: string;
   public version: string;
