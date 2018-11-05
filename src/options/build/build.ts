@@ -30,7 +30,7 @@ export default class Build {
   private generateBinariesWithConfigBuildFile(buildCommand: string) {
     const configBuildFile = new ConfigBuildModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.build.json`).toString()));
     if (configBuildFile.binaries && configBuildFile.binaries.length > 0) {
-      const compileProject = `g++ dist/${configBuildFile.binaries.join(' ')}`;
+      const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
       const outputFile = `-o dist/${configBuildFile.fileName}`;
       exec(`${buildCommand} && ${compileProject} ${outputFile}`, {cwd: process.cwd()});
     } else {

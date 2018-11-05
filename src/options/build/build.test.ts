@@ -90,7 +90,7 @@ describe('Build', () => {
     expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm build', directory);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/ &&`;
-    const compileProject = `g++ dist/${configBuildFile.binaries.join(' ')}`;
+    const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyChildProcessExec)
     .toHaveBeenNthCalledWith(2, `${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
@@ -130,7 +130,7 @@ describe('Build', () => {
     expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm build', directory);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/ &&`;
-    const compileProject = `g++ dist/${configBuildFile.binaries.join(' ')}`;
+    const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyChildProcessExec)
     .toHaveBeenNthCalledWith(2, `${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
