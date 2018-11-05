@@ -59,6 +59,19 @@ cpm build
 
 This command will generate binaries files in dist folder for all packages in ```cpm_modules```.
 
+Optionally you can create a config file called ```cpm.build.json``` just like the example:
+
+```json
+{
+  "fileName": "project.exe",
+  "binaries": [
+    "dist/main.o",
+    "dist/calculator.o",
+    "cpm_modules/complex-number/dist/complex.polar.o"
+  ]
+}
+```
+
 ### Log*
 
 If any error occured a ```cpm.log.json``` file will be created showing date and the description of the error.
