@@ -32,7 +32,6 @@ export default class Build {
     if (configBuildFile.binaries && configBuildFile.binaries.length > 0) {
       const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
       const outputFile = `-o dist/${configBuildFile.fileName}`;
-      console.log(`${buildCommand} && ${compileProject} ${outputFile}`, process.cwd());
       exec(`${buildCommand} && ${compileProject} ${outputFile}`, {cwd: process.cwd()});
     } else {
       throw new Error('The file cpm.build.json is not in correct pattern.');
