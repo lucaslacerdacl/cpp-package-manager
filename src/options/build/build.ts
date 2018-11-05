@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import DependenciesModel from '../dependencies.model';
 import { exec } from 'child_process';
 import ConfigBuildModel from '../config-build.model';
 
@@ -18,7 +17,6 @@ export default class Build {
   }
 
   private generateBinaries() {
-    this.generateDependenciesBinaries();
     const buildCommand = 'rm -rf dist && mkdir dist && g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/';
     if (this.checkFileExists('cpm.build.json')) {
       this.generateBinariesWithConfigBuildFile(buildCommand);
@@ -38,11 +36,4 @@ export default class Build {
     }
   }
 
-  private generateDependenciesBinaries() {
-    const configProjectFile = JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString());
-    _.forEach(configProjectFile.dependencies, (dependencie: DependenciesModel) => {
-      const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };
-      exec('cpm build', directory);
-    });
-  }
 }
