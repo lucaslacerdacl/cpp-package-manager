@@ -8,7 +8,7 @@ export default class Build {
     if (this.checkFileExists('cpm.packages.json')) {
       this.generateBinaries();
     } else {
-      console.error('There is no configuration file.');
+      throw new Error('There is no configuration file.');
     }
   }
 

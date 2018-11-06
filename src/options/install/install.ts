@@ -10,7 +10,7 @@ export default class Install {
     if (this.isConfigFileAvaliable()) {
       this.installDependencies();
     } else {
-      console.error('There is no configuration file.');
+      throw new Error('There is no configuration file.');
     }
   }
 

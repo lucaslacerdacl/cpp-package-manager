@@ -16,16 +16,16 @@ describe('Install', () => {
   });
 
   it('should not find config file', () => {
-    const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
 
-    new Install();
+    try {
+      new Install();
+    } catch (error) {
+      expect(error.message).toBe('There is no configuration file.');
+    }
 
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
-
-    expect(spyConsoleError).toHaveBeenCalledTimes(1);
-    expect(spyConsoleError).toHaveBeenCalledWith('There is no configuration file.');
 
   });
 

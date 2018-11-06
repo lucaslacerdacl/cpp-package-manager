@@ -11,7 +11,7 @@ export default class Init {
 
   constructor() {
     if (this.isConfigFileAvaliable()) {
-      console.error('A configuration file already exists.');
+      throw new Error('A configuration file already exists.');
     } else {
       console.log(
         chalk.yellow(

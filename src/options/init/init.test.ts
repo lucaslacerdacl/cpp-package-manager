@@ -18,17 +18,16 @@ describe('Init', () => {
   });
 
   it('should check and advise if the configuration file already exists', () => {
-    const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
 
-    new Init();
+    try {
+      new Init();
+    } catch (error) {
+      expect(error.message).toBe('A configuration file already exists.');
+    }
 
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
-
-    expect(spyConsoleError).toHaveBeenCalledTimes(1);
-    expect(spyConsoleError).toHaveBeenCalledWith('A configuration file already exists.');
-
   });
 
   it('should ask questions and create config file', async () => {

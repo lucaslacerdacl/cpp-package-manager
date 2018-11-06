@@ -17,10 +17,11 @@ describe('Build', () => {
     const spyConsoleError = jest.spyOn(console, 'error').mockImplementation(() => { });
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
 
-    new Build();
-
-    expect(spyConsoleError).toHaveBeenCalledTimes(1);
-    expect(spyConsoleError).toHaveBeenCalledWith('There is no configuration file.');
+    try {
+      new Build();
+    } catch (error) {
+      expect(error.message).toBe('There is no configuration file.');
+    }
 
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
