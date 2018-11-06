@@ -29,7 +29,7 @@ describe('Install', () => {
 
   });
 
-  it('should read dependencies and install', () => {
+  it('should read dependencies and install', async() => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
     const configFile = new ConfigProjectModel({ name: 'test', description: 'desc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
@@ -39,7 +39,7 @@ describe('Install', () => {
     const spyNodeGitClone = jest.spyOn(nodegit.Clone, 'clone').mockImplementation(() => {}).mockResolvedValue('');
     const spyChildProcessExec = jest.spyOn(child_process, 'exec').mockImplementation(() => {});
 
-    new Install();
+    await new Install();
 
     expect(spyReaddirSync).toHaveBeenCalledTimes(1);
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
@@ -52,9 +52,8 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledTimes(1);
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
-    expect(spyChildProcessExec).toHaveBeenCalledTimes(2);
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm install', {cwd: path});
-    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, 'cpm build', {cwd: path});
+    expect(spyChildProcessExec).toHaveBeenCalledTimes(1);
+    expect(spyChildProcessExec).toHaveBeenCalledWith('cpm install && cpm build', {cwd: path});
 
   });
 });

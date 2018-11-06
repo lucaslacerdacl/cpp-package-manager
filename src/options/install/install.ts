@@ -21,17 +21,11 @@ export default class Install {
   private installDependencies() {
     const file = JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString());
     _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
-      nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpm_modules/${dependencie.name}`);
-      const directory = {cwd: `${process.cwd()}/cpm_modules/${dependencie.name}`};
-      exec('cpm install', directory);
-    });
-    this.buildDependencies(file);
-  }
-
-  private buildDependencies(file: ConfigFileModel) {
-    _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
-      const directory = {cwd: `${process.cwd()}/cpm_modules/${dependencie.name}`};
-      exec('cpm build', directory);
+      nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpm_modules/${dependencie.name}`)
+        .then(() => {
+          const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };
+          exec('cpm install && cpm build', directory);
+        });
     });
   }
 }
