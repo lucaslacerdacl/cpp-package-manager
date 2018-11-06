@@ -52,8 +52,9 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledTimes(1);
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
-    expect(spyChildProcessExec).toHaveBeenCalledTimes(1);
-    expect(spyChildProcessExec).toHaveBeenCalledWith('cpm install && cpm build', {cwd: path});
+    expect(spyChildProcessExec).toHaveBeenCalledTimes(2);
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(1, 'cpm install', {cwd: path});
+    expect(spyChildProcessExec).toHaveBeenNthCalledWith(2, 'cpm build', {cwd: path});
 
   });
 });
