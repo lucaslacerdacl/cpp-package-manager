@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import DependenciesModel from '../dependencies.model';
 import * as nodegit from 'nodegit';
 import { exec } from 'child_process';
-import ConfigFileModel from '../config-project.model';
 
 export default class Install {
   constructor() {
