@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import DependenciesModel from '../dependencies.model';
 import * as nodegit from 'nodegit';
 import { exec } from 'child_process';
+import ConfigProjectModel from '../config-project.model';
 
 export default class Install {
   constructor() {
@@ -18,8 +19,9 @@ export default class Install {
   }
 
   private installDependencies() {
-    const file = JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString());
-    _.forEach(file.dependencies, (dependencie: DependenciesModel) => {
+    const file = new ConfigProjectModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString()));
+    const configProject = new ConfigProjectModel(file);
+    _.forEach(configProject.dependencies, (dependencie: DependenciesModel) => {
       nodegit.Clone.clone(dependencie.url, `${process.cwd()}/cpm_modules/${dependencie.name}`)
         .then(() => {
           const directory = { cwd: `${process.cwd()}/cpm_modules/${dependencie.name}` };

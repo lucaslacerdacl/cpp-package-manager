@@ -10,6 +10,10 @@ export default class ConfigProjectModel {
     this.name = initResult.name;
     this.description = initResult.description;
     this.version = initResult.version;
-    this.dependencies = new Array<DependenciesModel>();
+    if (initResult.dependencies) {
+      this.dependencies = initResult.dependencies;
+    } else {
+      this.dependencies = new Array<DependenciesModel>();
+    }
   }
 }
