@@ -1,14 +1,17 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import { exec } from 'child_process';
+import Exec from '../../lib/exec';
 import ConfigBuildModel from '../config-build.model';
+import Log from '../log/log';
 
 export default class Build {
-  constructor() {
+  constructor(private log: Log) { }
+
+  public async generateBinaries() {
     if (this.checkFileExists('cpm.packages.json')) {
-      this.generateBinaries();
+      await this.findBuildFileAndGenerateBinaries();
     } else {
-      throw new Error('There is no configuration file.');
+      this.log.createErrorLog('There is no configuration file.');
     }
   }
 
@@ -16,24 +19,31 @@ export default class Build {
     return _.includes(fs.readdirSync('.'), fileName);
   }
 
-  private generateBinaries() {
+  private async findBuildFileAndGenerateBinaries() {
     const buildCommand = 'rm -rf dist && mkdir dist && g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/';
     if (this.checkFileExists('cpm.build.json')) {
       this.generateBinariesWithConfigBuildFile(buildCommand);
     } else {
-      exec(`${buildCommand}`, { cwd: process.cwd() });
+      await this.executeCommand(`${buildCommand}`);
     }
   }
 
-  private generateBinariesWithConfigBuildFile(buildCommand: string) {
+  private async generateBinariesWithConfigBuildFile(buildCommand: string) {
     const configBuildFile = new ConfigBuildModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.build.json`).toString()));
     if (configBuildFile.binaries && configBuildFile.binaries.length > 0) {
       const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
       const outputFile = `-o dist/${configBuildFile.fileName}`;
-      exec(`${buildCommand} && ${compileProject} ${outputFile}`, {cwd: process.cwd()});
+      await this.executeCommand(`${buildCommand} && ${compileProject} ${outputFile}`);
     } else {
-      throw new Error('The file cpm.build.json is not in correct pattern.');
+      this.log.createErrorLog('The file cpm.build.json is not in correct pattern.');
     }
+  }
+
+  private async executeCommand(command): Promise<any> {
+    return await Exec.command(`${command}`, {cwd: process.cwd()})
+    .catch(error => {
+      this.log.createErrorLog(error);
+    });
   }
 
 }

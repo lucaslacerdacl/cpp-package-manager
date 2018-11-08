@@ -15,6 +15,9 @@
     "preset": "ts-jest",
     "roots": [
       "src"
+    ],
+    "collectCoverageFrom": [
+      "src/options/**/*.ts"
     ]
   },
   "repository": {

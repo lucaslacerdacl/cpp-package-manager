@@ -6,22 +6,31 @@ import Init from './options/init/init';
 import Install from './options/install/install';
 import Build from './options/build/build';
 import Log from './options/log/log';
+import * as inquirer from 'inquirer';
 
 export default class StartUp {
   private parameter: string;
+  private log: Log;
+  private init: Init;
+  private install: Install;
+  private build: Build;
 
   constructor() {
     this.parameter = argv(process.argv.slice(1))._[1];
-    this.checkParameter();
+    this.log = new Log();
+    this.init = new Init(inquirer, this.log);
+    this.install = new Install(this.log);
+    this.build = new Build(this.log);
+
   }
 
-  private checkParameter() {
+  public checkParameter() {
     if (this.parameter === 'init') {
-      new Init();
+      this.init.createConfigFile();
     } else if (this.parameter === 'install') {
-      new Install();
+      this.install.installDependencies();
     } else if (this.parameter === 'build') {
-      new Build();
+      this.build.generateBinaries();
     } else {
       console.log(chalk.red('Unknow command.'));
     }
@@ -29,7 +38,8 @@ export default class StartUp {
 }
 
 try {
-  new StartUp();
+  const cpm = new StartUp();
+  cpm.checkParameter();
 } catch (err) {
   new Log(err.message);
 }

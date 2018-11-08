@@ -4,7 +4,13 @@ import LogModel from './log.model';
 
 export default class Log {
 
-  constructor(error: any) {
+  constructor(error?: any) {
+    if (error) {
+      this.createErrorLog(error);
+    }
+  }
+
+  public createErrorLog(error: any) {
     const formatedError = new LogModel(error);
     if (!this.isLogFileAvaliable()) {
       this.createLogFile(formatedError);

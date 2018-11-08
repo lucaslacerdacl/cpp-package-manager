@@ -32,6 +32,11 @@ describe('Log', () => {
 
   });
 
+  it('should create log instance', () => {
+    const log = new Log();
+    expect(log).toBeTruthy();
+  });
+
   it('should add error in log file', () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.log.json']);
     const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { });
