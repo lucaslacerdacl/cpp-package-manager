@@ -1,15 +1,21 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import Exec from '../../lib/exec';
+import Glob from '../../lib/glob';
 import ConfigBuildModel from '../config-build.model';
 import Log from '../log/log';
 
 export default class Build {
   constructor(private log: Log) { }
 
-  public async generateBinaries() {
+  public async generateBinaries(): Promise<void> {
     if (this.checkFileExists('cpm.packages.json')) {
-      await this.findBuildFileAndGenerateBinaries();
+      try {
+        const paths = await this.findFiles();
+        this.buildFiles(paths);
+      } catch (error) {
+        this.log.createErrorLog(error);
+      }
     } else {
       this.log.createErrorLog('There is no configuration file.');
     }
@@ -19,31 +25,35 @@ export default class Build {
     return _.includes(fs.readdirSync('.'), fileName);
   }
 
-  private async findBuildFileAndGenerateBinaries() {
-    const buildCommand = 'rm -rf dist && mkdir dist && g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/';
+  private async findFiles(): Promise<string[]> {
+    return await Glob.findPattern(`${process.cwd()}/**/*.cpp`);
+  }
+
+  private buildFiles(paths: string[]): void {
+    const buildCommand = `rm -rf dist && mkdir dist && g++ -c ${paths.join(' ')} && mv *.o dist/`;
     if (this.checkFileExists('cpm.build.json')) {
       this.generateBinariesWithConfigBuildFile(buildCommand);
     } else {
-      await this.executeCommand(`${buildCommand}`);
+      this.executeCommand(`${buildCommand}`);
     }
   }
 
-  private async generateBinariesWithConfigBuildFile(buildCommand: string) {
+  private generateBinariesWithConfigBuildFile(buildCommand: string): void {
     const configBuildFile = new ConfigBuildModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.build.json`).toString()));
     if (configBuildFile.binaries && configBuildFile.binaries.length > 0) {
       const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
       const outputFile = `-o dist/${configBuildFile.fileName}`;
-      await this.executeCommand(`${buildCommand} && ${compileProject} ${outputFile}`);
+      this.executeCommand(`${buildCommand} && ${compileProject} ${outputFile}`);
     } else {
       this.log.createErrorLog('The file cpm.build.json is not in correct pattern.');
     }
   }
 
-  private async executeCommand(command): Promise<any> {
-    return await Exec.command(`${command}`, {cwd: process.cwd()})
-    .catch(error => {
-      this.log.createErrorLog(error);
-    });
+  private executeCommand(command): void {
+    Exec.command(`${command}`, { cwd: process.cwd() })
+      .catch(error => {
+        this.log.createErrorLog(error);
+      });
   }
 
 }

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import ConfigBuildModel from '../config-build.model';
 import Log from '../log/log';
 import Exec from '../../lib/exec';
+import Glob from '../../lib/glob';
 
 describe('Build', () => {
 
@@ -36,6 +37,8 @@ describe('Build', () => {
   it('should read dependencies and compile binaries not based in build file', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValueOnce('cpm.packages.json').mockResolvedValueOnce('');
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue('');
+    const paths = ['file.cpp', 'file2.cpp'];
+    const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockResolvedValue(paths);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -51,8 +54,10 @@ describe('Build', () => {
 
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
-    const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/`;
+    const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/`;
     expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, {cwd: process.cwd()});
+    expect(spyGlob).toHaveBeenCalledTimes(1);
+    expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
 
   it('should read dependencies and compile binaries based in build file', async () => {
@@ -68,6 +73,8 @@ describe('Build', () => {
     .mockReturnValueOnce(fileConfigBuildProject);
 
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue('');
+    const paths = ['file.cpp', 'file2.cpp'];
+    const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockResolvedValue(paths);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -86,11 +93,13 @@ describe('Build', () => {
 
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
-    const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/ &&`;
+    const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/ &&`;
     const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyExec)
     .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
+    expect(spyGlob).toHaveBeenCalledTimes(1);
+    expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
 
   it('should read dependencies and compile binaries based in build file without fileName', async () => {
@@ -105,6 +114,8 @@ describe('Build', () => {
     .mockReturnValueOnce(fileConfigBuildProject);
 
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue('');
+    const paths = ['file.cpp', 'file2.cpp'];
+    const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockResolvedValue(paths);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -123,11 +134,13 @@ describe('Build', () => {
 
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
-    const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/ &&`;
+    const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/ &&`;
     const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyExec)
     .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
+    expect(spyGlob).toHaveBeenCalledTimes(1);
+    expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
 
   it('should read dependencies and not compile binaries because the build file', async() => {
@@ -138,6 +151,10 @@ describe('Build', () => {
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
     .mockReturnValueOnce(fileConfigBuildProject);
 
+    const paths = ['file.cpp', 'file2.cpp'];
+    const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockResolvedValue(paths);
+
+
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
     }));
@@ -153,13 +170,18 @@ describe('Build', () => {
     expect(spyReadFileSync).toHaveBeenCalledTimes(1);
     expect(spyReadFileSync).toHaveBeenCalledWith(`${process.cwd()}/cpm.build.json`);
 
+    expect(spyGlob).toHaveBeenCalledTimes(1);
+    expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
+
     expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
     expect(logMock.createErrorLog).toHaveBeenCalledWith('The file cpm.build.json is not in correct pattern.');
   });
 
   it('should read dependencies and throw exception running command', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValueOnce('cpm.packages.json').mockResolvedValueOnce('');
-    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockRejectedValue('error');
+    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockRejectedValue('could not read dependencies');
+    const paths = ['file.cpp', 'file2.cpp'];
+    const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockResolvedValue(paths);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -175,10 +197,35 @@ describe('Build', () => {
 
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
-    const generateBinariesInDistFolder = `g++ -c src/**/*.cpp **/*.cpp && mv *.o dist/`;
+    const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/`;
     expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, {cwd: process.cwd()});
 
+    expect(spyGlob).toHaveBeenCalledTimes(1);
+    expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
+
     expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
-    expect(logMock.createErrorLog).toHaveBeenCalledWith('error');
+    expect(logMock.createErrorLog).toHaveBeenCalledWith('could not read dependencies');
+  });
+
+  it('should not find cpp files and throw exception', async () => {
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValueOnce('cpm.packages.json');
+    const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockRejectedValue('not find any cpp files');
+
+    const LogMock = jest.fn<Log>(() => ({
+      createErrorLog: jest.fn(),
+    }));
+    const logMock = new LogMock();
+    const build = new Build(logMock);
+
+    await build.generateBinaries();
+
+    expect(spyReaddirSync).toHaveBeenCalledTimes(1);
+    expect(spyReaddirSync).toHaveBeenCalledWith('.');
+
+    expect(spyGlob).toHaveBeenCalledTimes(1);
+    expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
+
+    expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
+    expect(logMock.createErrorLog).toHaveBeenCalledWith('not find any cpp files');
   });
 });

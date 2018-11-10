@@ -16,26 +16,27 @@ export default class Init {
     if (this.isConfigFileAvaliable()) {
       this.log.createErrorLog('A configuration file already exists.');
     } else {
-      console.log(
-        chalk.yellow(
-          figlet.textSync('CPM', { horizontalLayout: 'full' })
-        )
-      );
-      await this.getConfigFileResponse();
+      try {
+        this.showTitle();
+        const answers = await this.getConfigFileResponse();
+        this.createFileWithQuestions(answers);
+      } catch (error) {
+        this.log.createErrorLog(error);
+      }
     }
+  }
+
+  showTitle(): void {
+    console.log(chalk.yellow(figlet.textSync('CPM', { horizontalLayout: 'full' })));
   }
 
   private isConfigFileAvaliable(): boolean {
     return _.includes(fs.readdirSync('.'), 'cpm.packages.json');
   }
 
-  private async getConfigFileResponse(): Promise<any> {
+  private getConfigFileResponse(): Promise<{}> {
     const questions = this.createQuestionsToFillConfigFile();
-    await this.inquirer.prompt(questions)
-    .then(this.createFileWithQuestions)
-    .catch(error => {
-      this.log.createErrorLog(error);
-    });
+    return this.inquirer.prompt(questions);
   }
 
   private createQuestionsToFillConfigFile(): Array<{}> {
