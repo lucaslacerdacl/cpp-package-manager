@@ -12,7 +12,7 @@ export default class Build {
     if (this.checkFileExists('cpm.packages.json')) {
       try {
         const paths = await this.findFiles();
-        this.buildFiles(paths);
+        await this.buildFiles(paths);
       } catch (error) {
         this.log.createErrorLog(error);
       }
@@ -29,31 +29,28 @@ export default class Build {
     return await Glob.findPattern(`${process.cwd()}/**/*.cpp`);
   }
 
-  private buildFiles(paths: string[]): void {
+  private async buildFiles(paths: string[]) {
     const buildCommand = `rm -rf dist && mkdir dist && g++ -c ${paths.join(' ')} && mv *.o dist/`;
     if (this.checkFileExists('cpm.build.json')) {
-      this.generateBinariesWithConfigBuildFile(buildCommand);
+      await this.generateBinariesWithConfigBuildFile(buildCommand);
     } else {
-      this.executeCommand(`${buildCommand}`);
+      await this.executeCommand(`${buildCommand}`);
     }
   }
 
-  private generateBinariesWithConfigBuildFile(buildCommand: string): void {
+  private async generateBinariesWithConfigBuildFile(buildCommand: string) {
     const configBuildFile = new ConfigBuildModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.build.json`).toString()));
     if (configBuildFile.binaries && configBuildFile.binaries.length > 0) {
       const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
       const outputFile = `-o dist/${configBuildFile.fileName}`;
-      this.executeCommand(`${buildCommand} && ${compileProject} ${outputFile}`);
+      await this.executeCommand(`${buildCommand} && ${compileProject} ${outputFile}`);
     } else {
       this.log.createErrorLog('The file cpm.build.json is not in correct pattern.');
     }
   }
 
-  private executeCommand(command): void {
-    Exec.command(`${command}`, { cwd: process.cwd() })
-      .catch(error => {
-        this.log.createErrorLog(error);
-      });
+  private async executeCommand(command) {
+    await Exec.command(`${command}`, { cwd: process.cwd() });
   }
 
 }

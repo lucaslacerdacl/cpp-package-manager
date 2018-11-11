@@ -5,7 +5,6 @@ import * as nodegit from 'nodegit';
 import ConfigProjectModel from '../config-project.model';
 import Log from '../log/log';
 import Exec, { ExecResultModel } from '../../lib/exec';
-import { Repository } from 'nodegit';
 
 export default class Install {
   constructor(private log: Log) { }
