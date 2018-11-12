@@ -55,7 +55,7 @@ describe('Build', () => {
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/`;
-    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, { cwd: process.cwd(), env: process.env });
+    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, { cwd: process.cwd() });
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
@@ -98,7 +98,7 @@ describe('Build', () => {
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyExec)
       .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`,
-        { cwd: process.cwd(), env: process.env });
+        { cwd: process.cwd() });
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
@@ -140,7 +140,7 @@ describe('Build', () => {
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyExec)
       .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`,
-        { cwd: process.cwd(), env: process.env });
+        { cwd: process.cwd() });
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
@@ -200,7 +200,7 @@ describe('Build', () => {
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/`;
-    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, { cwd: process.cwd(), env: process.env });
+    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, { cwd: process.cwd() });
 
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);

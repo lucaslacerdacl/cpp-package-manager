@@ -12,19 +12,16 @@ export default class Install {
   public async installDependencies(): Promise<any> {
     const isConfigFileAvaliable = _.includes(fs.readdirSync('.'), 'cpm.packages.json');
     if (isConfigFileAvaliable) {
-      try {
-        await this.cleanPackagesFolder();
-        await this.readConfigFileAndInstallDependecies();
-      } catch (error) {
-        this.log.createErrorLog(error);
-      }
+      await this.cleanPackagesFolder()
+        .then(() => this.readConfigFileAndInstallDependecies())
+        .catch(error => this.log.createErrorLog(error));
     } else {
       this.log.createErrorLog('There is no configuration file.');
     }
   }
 
   private async cleanPackagesFolder(): Promise<ExecResultModel | void> {
-    await Exec.command('rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
+    await Exec.command('rm -rf cpm_modules', { cwd: process.cwd() });
   }
 
   private async readConfigFileAndInstallDependecies(): Promise<void> {
@@ -41,7 +38,7 @@ export default class Install {
 
   private async installDependency(dependency: DependenciesModel): Promise<void> {
     await nodegit.Clone.clone(dependency.url, `${process.cwd()}/cpm_modules/${dependency.name}`);
-    const config = { cwd: `${process.cwd()}/cpm_modules/${dependency.name}`, env: process.env };
-    await Exec.command('cpm install && cpm build', config);
+    const directory = { cwd: `${process.cwd()}/cpm_modules/${dependency.name}` };
+    await Exec.command('cpm install && cpm build', directory);
   }
 }

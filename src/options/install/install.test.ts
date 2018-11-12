@@ -66,8 +66,8 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
     expect(spyExec).toHaveBeenCalledTimes(2);
-    expect(spyExec).toHaveBeenNthCalledWith(1, 'rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
-    expect(spyExec).toHaveBeenNthCalledWith(2, 'cpm install && cpm build', { cwd: path, env: process.env });
+    expect(spyExec).toHaveBeenNthCalledWith(1, 'rm -rf cpm_modules', { cwd: process.cwd() });
+    expect(spyExec).toHaveBeenNthCalledWith(2, 'cpm install && cpm build', { cwd: path });
 
   });
 
@@ -88,7 +88,7 @@ describe('Install', () => {
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
 
     expect(spyExec).toHaveBeenCalledTimes(1);
-    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
+    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', { cwd: process.cwd() });
 
     expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
     expect(logMock.createErrorLog).toHaveBeenCalledWith(execResult);
@@ -126,7 +126,7 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
     expect(spyExec).toHaveBeenCalledTimes(1);
-    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
+    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', { cwd: process.cwd() });
 
     expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
     expect(logMock.createErrorLog).toHaveBeenCalledWith('error');
