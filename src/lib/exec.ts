@@ -20,9 +20,8 @@ export class ExecResultModel {
 
 export default class Exec {
   static command(command, options: ExecOptions): Promise<ExecResultModel> {
-    return new Promise(function(resolve, reject) {
-      exec(command, options, function(error, stdout, stderr) {
-        console.log(error, stdout, stderr);
+    return new Promise((resolve, reject) => {
+      exec(command, options, (error, stdout, stderr) => {
         if (error) {
           return reject({error, stdout, stderr});
         }
