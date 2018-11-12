@@ -55,7 +55,7 @@ describe('Build', () => {
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/`;
-    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, {cwd: process.cwd()});
+    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, { cwd: process.cwd(), env: process.env });
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
@@ -70,7 +70,7 @@ describe('Build', () => {
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
 
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
-    .mockReturnValueOnce(fileConfigBuildProject);
+      .mockReturnValueOnce(fileConfigBuildProject);
 
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue('');
     const paths = ['file.cpp', 'file2.cpp'];
@@ -97,7 +97,8 @@ describe('Build', () => {
     const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyExec)
-    .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
+      .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`,
+        { cwd: process.cwd(), env: process.env });
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
@@ -111,7 +112,7 @@ describe('Build', () => {
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
 
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
-    .mockReturnValueOnce(fileConfigBuildProject);
+      .mockReturnValueOnce(fileConfigBuildProject);
 
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue('');
     const paths = ['file.cpp', 'file2.cpp'];
@@ -138,18 +139,19 @@ describe('Build', () => {
     const compileProject = `g++ ${configBuildFile.binaries.join(' ')}`;
     const outputFile = `-o dist/${configBuildFile.fileName}`;
     expect(spyExec)
-    .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`, {cwd: process.cwd()});
+      .toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder} ${compileProject} ${outputFile}`,
+        { cwd: process.cwd(), env: process.env });
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);
   });
 
-  it('should read dependencies and not compile binaries because the build file', async() => {
+  it('should read dependencies and not compile binaries because the build file', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValueOnce('cpm.packages.json').mockReturnValueOnce('cpm.build.json');
     const configBuildFile = new ConfigBuildModel({});
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
 
     const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { })
-    .mockReturnValueOnce(fileConfigBuildProject);
+      .mockReturnValueOnce(fileConfigBuildProject);
 
     const paths = ['file.cpp', 'file2.cpp'];
     const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockResolvedValue(paths);
@@ -198,7 +200,7 @@ describe('Build', () => {
     expect(spyExec).toHaveBeenCalledTimes(1);
     const cleanDistFolder = 'rm -rf dist && mkdir dist &&';
     const generateBinariesInDistFolder = `g++ -c ${paths.join(' ')} && mv *.o dist/`;
-    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, {cwd: process.cwd()});
+    expect(spyExec).toHaveBeenCalledWith(`${cleanDistFolder} ${generateBinariesInDistFolder}`, { cwd: process.cwd(), env: process.env });
 
     expect(spyGlob).toHaveBeenCalledTimes(1);
     expect(spyGlob).toHaveBeenCalledWith(`${process.cwd()}/**/*.cpp`);

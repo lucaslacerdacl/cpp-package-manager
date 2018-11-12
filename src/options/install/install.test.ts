@@ -41,10 +41,10 @@ describe('Install', () => {
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
     const file = Buffer.from(JSON.stringify(configFile));
-    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {}).mockReturnValueOnce(file);
-    const spyNodeGitClone = jest.spyOn(nodegit.Clone, 'clone').mockImplementation(() => {}).mockResolvedValue('');
+    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { }).mockReturnValueOnce(file);
+    const spyNodeGitClone = jest.spyOn(nodegit.Clone, 'clone').mockImplementation(() => { }).mockResolvedValue('');
     const execResult = new ExecResultModel();
-    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => {}).mockResolvedValue(execResult);
+    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue(execResult);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -66,15 +66,15 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
     expect(spyExec).toHaveBeenCalledTimes(2);
-    expect(spyExec).toHaveBeenNthCalledWith(1, 'rm -rf cpm_modules', {cwd: process.cwd()});
-    expect(spyExec).toHaveBeenNthCalledWith(2, 'cpm install && cpm build', {cwd: path});
+    expect(spyExec).toHaveBeenNthCalledWith(1, 'rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
+    expect(spyExec).toHaveBeenNthCalledWith(2, 'cpm install && cpm build', { cwd: path, env: process.env });
 
   });
 
   it('should throw exception when delete cpm_modules folder', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
     const execResult = new ExecResultModel(null, 'Could not delete cpm_modules');
-    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => {}).mockRejectedValue(execResult);
+    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockRejectedValue(execResult);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -88,7 +88,7 @@ describe('Install', () => {
     expect(spyReaddirSync).toHaveBeenCalledWith('.');
 
     expect(spyExec).toHaveBeenCalledTimes(1);
-    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', {cwd: process.cwd()});
+    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
 
     expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
     expect(logMock.createErrorLog).toHaveBeenCalledWith(execResult);
@@ -101,10 +101,10 @@ describe('Install', () => {
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
     const file = Buffer.from(JSON.stringify(configFile));
-    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {}).mockReturnValueOnce(file);
-    const spyNodeGitClone = jest.spyOn(nodegit.Clone, 'clone').mockImplementation(() => {}).mockRejectedValue('error');
+    const spyReadFileSync = jest.spyOn(fs, 'readFileSync').mockImplementation(() => { }).mockReturnValueOnce(file);
+    const spyNodeGitClone = jest.spyOn(nodegit.Clone, 'clone').mockImplementation(() => { }).mockRejectedValue('error');
     const execResult = new ExecResultModel();
-    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => {}).mockResolvedValue(execResult);
+    const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue(execResult);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -126,7 +126,7 @@ describe('Install', () => {
     expect(spyNodeGitClone).toHaveBeenCalledWith(dependencie.url, path);
 
     expect(spyExec).toHaveBeenCalledTimes(1);
-    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', {cwd: process.cwd()});
+    expect(spyExec).toHaveBeenCalledWith('rm -rf cpm_modules', { cwd: process.cwd(), env: process.env });
 
     expect(logMock.createErrorLog).toHaveBeenCalledTimes(1);
     expect(logMock.createErrorLog).toHaveBeenCalledWith('error');
