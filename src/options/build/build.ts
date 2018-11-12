@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import * as child_process from 'child_process';
+import Exec from '../../lib/exec';
 import Glob from '../../lib/glob';
 import ConfigBuildModel from '../config-build.model';
 import Log from '../log/log';
@@ -50,11 +50,7 @@ export default class Build {
   }
 
   private async executeCommand(command) {
-    child_process.exec(command, { cwd: process.cwd() }, (error, stdout, stderr) => {
-      if (error) {
-        this.log.createErrorLog({error, stdout, stderr});
-      }
-    });
+    await Exec.command(`${command}`, { cwd: process.cwd() });
   }
 
 }
