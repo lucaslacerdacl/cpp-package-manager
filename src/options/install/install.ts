@@ -14,7 +14,7 @@ export default class Install {
     if (isConfigFileAvaliable) {
       try {
         await this.cleanPackagesFolder();
-        this.readConfigFileAndInstallDependecies();
+        await this.readConfigFileAndInstallDependecies();
       } catch (error) {
         this.log.createErrorLog(error);
       }
@@ -27,22 +27,21 @@ export default class Install {
     await Exec.command('rm -rf cpm_modules', { cwd: process.cwd() });
   }
 
-  private readConfigFileAndInstallDependecies(): void {
+  private async readConfigFileAndInstallDependecies(): Promise<void> {
     const file = new ConfigProjectModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString()));
     const configProject = new ConfigProjectModel(file);
-    _.forEach(configProject.dependencies, (dependency: DependenciesModel) => {
-      this.installDependency(dependency);
+    await _.forEach(configProject.dependencies, async (dependency: DependenciesModel) => {
+      try {
+        await this.installDependency(dependency);
+      } catch (error) {
+        this.log.createErrorLog(error);
+      }
     });
   }
 
-  private installDependency(dependency: DependenciesModel): void {
-    nodegit.Clone.clone(dependency.url, `${process.cwd()}/cpm_modules/${dependency.name}`)
-      .then(() => {
-        const directory = { cwd: `${process.cwd()}/cpm_modules/${dependency.name}` };
-        return Exec.command('cpm install && cpm build', directory);
-      })
-      .catch(error => {
-        this.log.createErrorLog(error);
-      });
+  private async installDependency(dependency: DependenciesModel): Promise<void> {
+    await nodegit.Clone.clone(dependency.url, `${process.cwd()}/cpm_modules/${dependency.name}`);
+    const directory = { cwd: `${process.cwd()}/cpm_modules/${dependency.name}` };
+    await Exec.command('cpm install && cpm build', directory);
   }
 }

@@ -24,13 +24,13 @@ export default class StartUp {
 
   }
 
-  public checkParameter() {
+  public async checkParameter() {
     if (this.parameter === 'init') {
-      this.init.createConfigFile();
+      await this.init.createConfigFile();
     } else if (this.parameter === 'install') {
-      this.install.installDependencies();
+      await this.install.installDependencies();
     } else if (this.parameter === 'build') {
-      this.build.generateBinaries();
+      await this.build.generateBinaries();
     } else {
       console.log(chalk.red('Unknow command.'));
     }
