@@ -10,9 +10,12 @@ export default class Build {
 
   public async generateBinaries(): Promise<void> {
     if (this.checkFileExists('cpm.packages.json')) {
-      await this.findFiles()
-        .then(paths => this.buildFiles(paths))
-        .catch(error => this.log.createErrorLog(error));
+      try {
+        const paths = await this.findFiles();
+        await this.buildFiles(paths);
+      } catch (error) {
+        this.log.createErrorLog(error);
+      }
     } else {
       this.log.createErrorLog('There is no configuration file.');
     }

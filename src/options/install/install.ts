@@ -12,9 +12,12 @@ export default class Install {
   public async installDependencies(): Promise<any> {
     const isConfigFileAvaliable = _.includes(fs.readdirSync('.'), 'cpm.packages.json');
     if (isConfigFileAvaliable) {
-      await this.cleanPackagesFolder()
-        .then(() => this.readConfigFileAndInstallDependecies())
-        .catch(error => this.log.createErrorLog(error));
+      try {
+        await this.cleanPackagesFolder();
+        await this.readConfigFileAndInstallDependecies();
+      } catch (error) {
+        this.log.createErrorLog(error);
+      }
     } else {
       this.log.createErrorLog('There is no configuration file.');
     }
