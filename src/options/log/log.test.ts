@@ -13,7 +13,7 @@ describe('Log', () => {
   });
 
   it('should create log file', () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue([]);
     const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { });
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
     const errMessage = 'err';
@@ -38,7 +38,7 @@ describe('Log', () => {
   });
 
   it('should add error in log file', () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.log.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.log.json']);
     const spyWriteFileSync = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => { });
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
     const errMessage = 'err 1';

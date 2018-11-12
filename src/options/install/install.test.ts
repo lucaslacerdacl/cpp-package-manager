@@ -17,7 +17,7 @@ describe('Install', () => {
   });
 
   it('should not find config file', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue([]);
 
     const LogMock = jest.fn<Log>(() => ({
       createErrorLog: jest.fn(),
@@ -36,7 +36,7 @@ describe('Install', () => {
   });
 
   it('should read dependencies and install', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.packages.json']);
     const configFile = new ConfigProjectModel({ name: 'test', description: 'desc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);
@@ -72,7 +72,7 @@ describe('Install', () => {
   });
 
   it('should throw exception when delete cpm_modules folder', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.packages.json']);
     const execResult = new ExecResultModel(null, 'Could not delete cpm_modules');
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockRejectedValue(execResult);
 
@@ -96,7 +96,7 @@ describe('Install', () => {
   });
 
   it('should throw exception when clone dependency', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.packages.json']);
     const configFile = new ConfigProjectModel({ name: 'test', description: 'desc', version: '1.0.0' });
     const dependencie = new DependenciesModel('example', 'http://github.com/example');
     configFile.dependencies = new Array<DependenciesModel>(dependencie);

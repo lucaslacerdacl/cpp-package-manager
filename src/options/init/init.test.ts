@@ -19,7 +19,7 @@ describe('Init', () => {
   });
 
   it('should check and advise if the configuration file already exists', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue(['cpm.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.packages.json']);
     const InquirerMock = jest.fn<Inquirer>(() => ({
       prompt: jest.fn(),
     }));
@@ -40,7 +40,7 @@ describe('Init', () => {
   });
 
   it('should ask questions and create config file', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue([]);
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
     const spyFiglet = jest.spyOn(figlet, 'textSync').mockImplementation(() => {}).mockReturnValue('Test');
     const name = new InitModel('name', 'input', 'Enter a name for the project', path.basename(process.cwd()));
@@ -80,7 +80,7 @@ describe('Init', () => {
   });
 
   it('should ask questions and create log file', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockReturnValue([]);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue([]);
     const spyConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
     const spyFiglet = jest.spyOn(figlet, 'textSync').mockImplementation(() => {}).mockReturnValue('Test');
     const name = new InitModel('name', 'input', 'Enter a name for the project', path.basename(process.cwd()));
