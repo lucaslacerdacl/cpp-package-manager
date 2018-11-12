@@ -50,7 +50,12 @@ export default class Build {
   }
 
   private async executeCommand(command) {
-    await Exec.command(`${command}`, { cwd: process.cwd() });
+    await Exec.command(`${command}`, { cwd: process.cwd() })
+      .then(s => console.log(s))
+      .catch(e => {
+        console.log(e);
+        throw e;
+      });
   }
 
 }
