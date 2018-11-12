@@ -37,10 +37,11 @@ export default class StartUp {
   }
 }
 
-try {
-  const cpm = new StartUp();
-  cpm.checkParameter();
-} catch (err) {
-  new Log(err.message);
-}
-
+(async () => {
+  try {
+    const cpm = new StartUp();
+    await cpm.checkParameter();
+  } catch (err) {
+    new Log(err.message);
+  }
+})();
