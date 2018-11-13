@@ -94,6 +94,7 @@ If any error occured a ```cpm.log.json``` file will be created showing date and 
 
 ### Prerequisites
 You will need install [Node](https://nodejs.org).
+You will need install [GNU Compiler Collection](https://gcc.gnu.org/).
 
 
 ### Deploying / Publishing
@@ -143,7 +144,7 @@ Get command and choose the options.
 
 ## Api Reference
 Check the proccess in Medium:
-[Criando um CLI com Node.js e Typescript](http://semver.org/)
+[Construindo um CLI com Node.js e TS.](https://medium.com/@lucaslacerdacl/construindo-um-cli-com-node-js-e-ts-fe4c9a484065/)
 
 ## Licensing
 
