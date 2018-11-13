@@ -9,7 +9,7 @@ export default class Build {
   constructor(private log: Log) { }
 
   public async generateBinaries(): Promise<void> {
-    if (this.checkFileExists('cpm.packages.json')) {
+    if (this.checkFileExists('cpm.package.json')) {
       try {
         const paths = await this.findFiles();
         await this.buildFiles(paths);

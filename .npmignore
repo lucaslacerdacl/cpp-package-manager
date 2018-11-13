@@ -2,7 +2,7 @@
 .vscode
 
 # Generated files
-cpm.packages.json
+cpm.package.json
 cpm_modules
 
 # Source files

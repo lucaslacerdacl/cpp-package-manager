@@ -10,7 +10,7 @@ export default class Install {
   constructor(private log: Log) { }
 
   public async installDependencies(): Promise<any> {
-    const isConfigFileAvaliable = _.includes(fs.readdirSync('.'), 'cpm.packages.json');
+    const isConfigFileAvaliable = _.includes(fs.readdirSync('.'), 'cpm.package.json');
     if (isConfigFileAvaliable) {
       try {
         await this.cleanPackagesFolder();
@@ -28,7 +28,7 @@ export default class Install {
   }
 
   private async readConfigFileAndInstallDependecies(): Promise<void> {
-    const file = new ConfigProjectModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.packages.json`).toString()));
+    const file = new ConfigProjectModel(JSON.parse(fs.readFileSync(`${process.cwd()}/cpm.package.json`).toString()));
     const configProject = new ConfigProjectModel(file);
     await _.forEach(configProject.dependencies, async (dependency: DependenciesModel) => {
       try {

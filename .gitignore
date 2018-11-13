@@ -67,7 +67,7 @@ typings/
 .vscode
 
 # Generated files
-cpm.packages.json
+cpm.package.json
 cpm.log.json
 cpm.build.json
 cpm_modules

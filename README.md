@@ -17,7 +17,7 @@ This project provide three features for manager cpp package.
 cpm init
 ```
 
-This command will generate a ```cpm.packages.json``` file with the following properties:
+This command will generate a ```cpm.package.json``` file with the following properties:
 
 ```json
 {

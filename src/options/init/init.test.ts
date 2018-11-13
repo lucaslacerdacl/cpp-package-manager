@@ -19,7 +19,7 @@ describe('Init', () => {
   });
 
   it('should check and advise if the configuration file already exists', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.packages.json']);
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValue(['cpm.package.json']);
     const InquirerMock = jest.fn<Inquirer>(() => ({
       prompt: jest.fn(),
     }));
@@ -69,7 +69,7 @@ describe('Init', () => {
     expect(inquirerMock.prompt).toHaveBeenCalledWith(questions);
 
     expect(spyWriteFileSync).toHaveBeenCalledTimes(1);
-    expect(spyWriteFileSync).toHaveBeenCalledWith('cpm.packages.json', JSON.stringify(configFile, null, 2));
+    expect(spyWriteFileSync).toHaveBeenCalledWith('cpm.package.json', JSON.stringify(configFile, null, 2));
 
     expect(spyFiglet).toHaveBeenCalledTimes(1);
     expect(spyFiglet).toHaveBeenCalledWith('CPM', { horizontalLayout: 'full' });

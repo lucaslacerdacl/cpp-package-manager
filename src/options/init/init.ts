@@ -18,8 +18,8 @@ export default class Init {
     } else {
       try {
         this.showTitle();
-        const answers = await this.getConfigFileResponse();
-        this.createFileWithQuestions(answers);
+        const answers = await this.getAnswers();
+        this.createFile(answers);
       } catch (error) {
         this.log.createErrorLog(error);
       }
@@ -31,10 +31,10 @@ export default class Init {
   }
 
   private isConfigFileAvaliable(): boolean {
-    return _.includes(fs.readdirSync('.'), 'cpm.packages.json');
+    return _.includes(fs.readdirSync('.'), 'cpm.package.json');
   }
 
-  private getConfigFileResponse(): Promise<{}> {
+  private getAnswers(): Promise<{}> {
     const questions = this.createQuestionsToFillConfigFile();
     return this.inquirer.prompt(questions);
   }
@@ -47,9 +47,9 @@ export default class Init {
     return new Array<{}>(name.toObject(), description.toObject(), version.toObject());
   }
 
-  private createFileWithQuestions(initResult: any): void {
+  private createFile(initResult: any): void {
     const configFile = new ConfigProjectModel(initResult);
-    fs.writeFileSync('cpm.packages.json', JSON.stringify(configFile, null, 2));
+    fs.writeFileSync('cpm.package.json', JSON.stringify(configFile, null, 2));
   }
 
 }

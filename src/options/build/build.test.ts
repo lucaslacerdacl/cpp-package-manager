@@ -38,7 +38,7 @@ describe('Build', () => {
   it('should read dependencies and compile binaries not based in build file', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync')
     .mockImplementation()
-    .mockReturnValueOnce('cpm.packages.json')
+    .mockReturnValueOnce('cpm.package.json')
     .mockResolvedValueOnce('');
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockResolvedValue('');
     const paths = ['file.cpp', 'file2.cpp'];
@@ -67,7 +67,7 @@ describe('Build', () => {
   it('should read dependencies and compile binaries based in build file', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync')
     .mockImplementation()
-    .mockReturnValueOnce('cpm.packages.json')
+    .mockReturnValueOnce('cpm.package.json')
     .mockReturnValueOnce('cpm.build.json');
 
     const configBuildFile = new ConfigBuildModel({
@@ -113,7 +113,7 @@ describe('Build', () => {
   it('should read dependencies and compile binaries based in build file without fileName', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync')
     .mockImplementation()
-    .mockReturnValueOnce('cpm.packages.json')
+    .mockReturnValueOnce('cpm.package.json')
     .mockReturnValueOnce('cpm.build.json');
 
     const configBuildFile = new ConfigBuildModel({
@@ -158,7 +158,7 @@ describe('Build', () => {
   it('should read dependencies and not compile binaries because the build file', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync')
     .mockImplementation()
-    .mockReturnValueOnce('cpm.packages.json')
+    .mockReturnValueOnce('cpm.package.json')
     .mockReturnValueOnce('cpm.build.json');
     const configBuildFile = new ConfigBuildModel({});
     const fileConfigBuildProject = Buffer.from(JSON.stringify(configBuildFile));
@@ -195,7 +195,7 @@ describe('Build', () => {
   it('should read dependencies and throw exception running command', async () => {
     const spyReaddirSync = jest.spyOn(fs, 'readdirSync')
     .mockImplementation()
-    .mockReturnValueOnce('cpm.packages.json')
+    .mockReturnValueOnce('cpm.package.json')
     .mockResolvedValueOnce('');
     const spyExec = jest.spyOn(Exec, 'command').mockImplementation(() => { }).mockRejectedValue('could not read dependencies');
     const paths = ['file.cpp', 'file2.cpp'];
@@ -226,7 +226,7 @@ describe('Build', () => {
   });
 
   it('should not find cpp files and throw exception', async () => {
-    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValueOnce('cpm.packages.json');
+    const spyReaddirSync = jest.spyOn(fs, 'readdirSync').mockImplementation().mockReturnValueOnce('cpm.package.json');
     const spyGlob = jest.spyOn(Glob, 'findPattern').mockImplementation(() => { }).mockRejectedValue('not find any cpp files');
 
     const LogMock = jest.fn<Log>(() => ({
