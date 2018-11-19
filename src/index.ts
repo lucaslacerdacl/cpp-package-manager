@@ -34,7 +34,7 @@ export default class StartUp {
       await this.install.installDependencies();
     } else if (this.parameter === 'build') {
       await this.build.generateBinaries();
-    } else if (this.parameter === 'version' || this.parameter === '-v' || this.parameter === '--version') {
+    } else if (this.parameter === 'version') {
       await this.version.printVersion();
     } else {
       console.log(chalk.red('Unknow command.'));

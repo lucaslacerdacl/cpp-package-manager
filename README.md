@@ -72,6 +72,14 @@ Optionally you can create a config file called ```cpm.build.json``` just like th
 }
 ```
 
+### Version
+
+```shell
+cpm version
+```
+
+This command will print the current version installed on your device.
+
 ### Log*
 
 If any error occured a ```cpm.log.json``` file will be created showing date and the description of the error.
