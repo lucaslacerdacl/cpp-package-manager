@@ -7,6 +7,7 @@ import Install from './options/install/install';
 import Build from './options/build/build';
 import Log from './options/log/log';
 import * as inquirer from 'inquirer';
+import Version from './options/version/version';
 
 export default class StartUp {
   private parameter: string;
@@ -14,6 +15,7 @@ export default class StartUp {
   private init: Init;
   private install: Install;
   private build: Build;
+  private version: Version;
 
   constructor() {
     this.parameter = argv(process.argv.slice(1))._[1];
@@ -21,6 +23,7 @@ export default class StartUp {
     this.init = new Init(inquirer, this.log);
     this.install = new Install(this.log);
     this.build = new Build(this.log);
+    this.version = new Version(this.log);
 
   }
 
@@ -31,6 +34,8 @@ export default class StartUp {
       await this.install.installDependencies();
     } else if (this.parameter === 'build') {
       await this.build.generateBinaries();
+    } else if (this.parameter === 'version' || this.parameter === '-v' || this.parameter === '--version') {
+      await this.version.printVersion();
     } else {
       console.log(chalk.red('Unknow command.'));
     }
